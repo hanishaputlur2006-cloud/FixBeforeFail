@@ -1,0 +1,63 @@
+/*
+  Design tokens: the single source of truth for colours, type, spacing and shape.
+  Components use these variables instead of hard-coded values, so the whole app
+  stays consistent and can be re-themed from this one file.
+*/
+:root {
+  /* Brand */
+  --navy-950: #0b1a2e;
+  --navy-900: #132640;
+  --navy-800: #1c3354;
+  --navy-700: #2a4569;
+  --navy-300: #a9b8cc;
+  --blue-700: #174db3;
+  --blue-600: #1e5fd8;
+  --blue-50: #edf3fd;
+  --teal-600: #0f9d8a;
+  --teal-500: #14b39c;
+  --teal-50: #e7f6f3;
+
+  /* Neutrals */
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --surface-muted: #f0f3f7;
+  --border: #e2e7ee;
+  --border-strong: #cdd5e0;
+  --text: #0f1b2d;
+  --text-muted: #5a6a80;
+  --text-subtle: #8392a6;
+
+  /* Risk levels: red / amber / slate. Green is reserved for "fixed". */
+  --critical: #c9302c;
+  --critical-bg: #fcecea;
+  --high: #a85f00;
+  --high-bg: #fdf1e1;
+  --high-border: #f0d2a4;
+  --medium: #8a6a00;
+  --medium-border: #e3c56d;
+  --low: #5a6a80;
+  --low-bg: #eef1f5;
+  --success: #1e8a4c;
+  --success-bg: #e8f5ee;
+
+  /* Typography */
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  /* Shape and depth */
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(15, 27, 45, 0.04);
+  --shadow-md: 0 1px 2px rgba(15, 27, 45, 0.04), 0 4px 16px rgba(15, 27, 45, 0.06);
+
+  /* Layout */
+  --container: 1180px;
+  --gutter: 24px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 16px;
+  }
+}

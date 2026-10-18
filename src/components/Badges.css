@@ -1,0 +1,90 @@
+/* Priority badges: the stronger the risk, the stronger the visual weight. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font: 600 12px/1 var(--font-sans);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.badge-critical {
+  background: var(--critical);
+  color: #fff;
+}
+
+.badge-high {
+  background: var(--high-bg);
+  border-color: var(--high-border);
+  color: var(--high);
+}
+
+.badge-medium {
+  border-color: var(--medium-border);
+  color: var(--medium);
+}
+
+.badge-low {
+  background: var(--low-bg);
+  color: var(--low);
+}
+
+/* Status: a quiet dot + label, so colour is saved for urgency. */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-neutral .status-dot {
+  background: var(--text-subtle);
+}
+.status-blue .status-dot {
+  background: var(--blue-600);
+}
+.status-teal .status-dot {
+  background: var(--teal-600);
+}
+.status-green .status-dot {
+  background: var(--success);
+}
+
+/* Scores */
+.score {
+  font-weight: 600;
+  line-height: 1;
+}
+.score-md {
+  font-size: 18px;
+}
+.score-lg {
+  font-size: 40px;
+  letter-spacing: -0.02em;
+}
+
+.score-critical {
+  color: var(--critical);
+}
+.score-high {
+  color: var(--high);
+}
+.score-medium {
+  color: var(--text);
+}
+.score-low {
+  color: var(--text-muted);
+}
