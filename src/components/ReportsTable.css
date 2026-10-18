@@ -1,0 +1,105 @@
+.rt-wrap {
+  overflow-x: auto;
+}
+
+.rt {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.rt th {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.rt td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.rt tbody tr {
+  cursor: pointer;
+  transition: background-color 0.12s;
+}
+
+.rt tbody tr:hover {
+  background: var(--bg);
+}
+
+.rt tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Critical rows: a red rule on the left edge. */
+.rt tr.is-critical td:first-child {
+  box-shadow: inset 3px 0 0 var(--critical);
+}
+
+.rt-issue {
+  min-width: 240px;
+}
+
+.rt-title {
+  font-weight: 500;
+}
+
+.rt-title:hover {
+  color: var(--blue-600);
+}
+
+.rt-sub {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+.rt-muted {
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.rt-none {
+  color: var(--text-subtle);
+}
+
+.rt-overdue {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--critical);
+}
+
+@media (max-width: 1440px) {
+  .rt-hide-lg {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .rt-hide-md {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .rt-hide-sm {
+    display: none;
+  }
+  .rt-issue {
+    min-width: 0;
+  }
+  .rt th,
+  .rt td {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}

@@ -1,0 +1,457 @@
+/* ---------- Dashboard grids ---------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 24px;
+  align-items: start;
+}
+
+.dash-queue {
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.search {
+  position: relative;
+  flex: 1 1 220px;
+}
+
+.search svg {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: var(--text-subtle);
+  pointer-events: none;
+}
+
+.search .input {
+  width: 100%;
+  padding-left: 36px;
+}
+
+.dash-queue-foot {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+/* Side panels (overdue, recurring) */
+.dash-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.side-card {
+  padding: 18px;
+}
+
+.side-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.side-icon-critical {
+  color: var(--critical);
+}
+
+.side-desc {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.side-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+}
+
+.side-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+
+.side-item .score {
+  min-width: 26px;
+  margin-top: 1px;
+}
+
+.side-item-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.side-item-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.side-item:hover .side-item-title {
+  color: var(--blue-600);
+}
+
+.side-item-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.side-empty {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-subtle);
+}
+
+/* ---------- Citizen report cards ---------- */
+
+.report-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.report-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  transition: border-color 0.15s;
+}
+
+.report-card:hover {
+  border-color: var(--border-strong);
+}
+
+.report-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.report-card-id {
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+.report-card h3 {
+  margin-top: 12px;
+  font-size: 16px;
+}
+
+.report-card-loc,
+.job-loc,
+.detail-loc {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.report-card-loc svg,
+.job-loc svg,
+.detail-loc svg {
+  flex-shrink: 0;
+}
+
+/* Six-segment lifecycle progress bar */
+.progress {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin: 20px 0 14px;
+}
+
+.progress span {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--surface-muted);
+}
+
+.progress span.is-done {
+  background: var(--blue-600);
+}
+
+.report-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.report-card-date {
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+/* ---------- Worker assignments ---------- */
+
+.tabs {
+  display: inline-flex;
+  margin-bottom: 16px;
+}
+
+.tab-count {
+  margin-left: 4px;
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+.job-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.job {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 20px;
+  transition: border-color 0.15s;
+}
+
+.job:hover {
+  border-color: var(--border-strong);
+}
+
+.job.is-critical {
+  box-shadow: inset 3px 0 0 var(--critical), var(--shadow-sm);
+}
+
+.job-score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.job-score .score-lg {
+  font-size: 32px;
+}
+
+.job-id {
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+.job h3 {
+  margin-top: 2px;
+  font-size: 16px;
+}
+
+.job-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  text-align: right;
+}
+
+.job-age {
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+/* ---------- Report details ---------- */
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.back-link:hover {
+  color: var(--text);
+}
+
+.detail-header {
+  margin-bottom: 24px;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.detail-id {
+  font-size: 13px;
+  color: var(--text-subtle);
+}
+
+.detail-overdue {
+  margin-top: 0;
+}
+
+.detail-header h1 {
+  margin-top: 12px;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+.detail-loc {
+  font-size: 14px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 24px;
+  align-items: start;
+}
+
+.detail-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-card {
+  padding: 24px;
+}
+
+.detail-card > h2 {
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+.detail-card .state-view {
+  padding: 24px 16px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.detail-desc {
+  font-size: 15px;
+}
+
+.detail-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 24px;
+  margin: 20px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.detail-facts dt {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.detail-facts dd {
+  margin: 2px 0 0;
+  font-size: 14px;
+}
+
+.detail-score {
+  position: sticky;
+  top: 88px;
+}
+
+.detail-score-note {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1280px) {
+  .stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .dash-grid,
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .dash-side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .detail-score {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .stat-grid,
+  .stat-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .stat-card {
+    padding: 14px 16px;
+  }
+  .stat-value {
+    font-size: 24px;
+  }
+  .dash-side {
+    grid-template-columns: 1fr;
+  }
+  .toolbar select.input {
+    flex: 1 1 140px;
+  }
+  .job {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .job-score {
+    flex-direction: row;
+    align-items: center;
+  }
+  .job-meta {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    text-align: left;
+  }
+  .detail-facts {
+    grid-template-columns: 1fr;
+  }
+  .detail-card {
+    padding: 20px;
+  }
+}

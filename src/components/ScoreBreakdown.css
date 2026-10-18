@@ -1,0 +1,67 @@
+.breakdown-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.breakdown-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.breakdown-id {
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+.breakdown-total {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 14px 0 20px;
+}
+
+.breakdown-of {
+  margin-right: 8px;
+  font-size: 14px;
+  color: var(--text-subtle);
+}
+
+.breakdown-total .badge {
+  align-self: center;
+}
+
+.breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.breakdown-max {
+  color: var(--text-subtle);
+}
+
+.breakdown-track {
+  height: 4px;
+  margin: 6px 0 4px;
+  border-radius: 2px;
+  background: var(--surface-muted);
+}
+
+.breakdown-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--navy-700);
+}
+
+.breakdown-note {
+  font-size: 12px;
+  color: var(--text-muted);
+}

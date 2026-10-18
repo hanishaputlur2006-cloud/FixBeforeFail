@@ -1,0 +1,70 @@
+.timeline li {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  padding-bottom: 20px;
+}
+
+.timeline li:last-child {
+  padding-bottom: 0;
+}
+
+/* Vertical line connecting the markers */
+.timeline li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  bottom: 0;
+  left: 5px;
+  width: 1px;
+  background: var(--border);
+}
+
+.timeline-marker {
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  margin-top: 5px;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.timeline li.is-current .timeline-marker {
+  border-color: var(--blue-600);
+  background: var(--blue-600);
+}
+
+.timeline-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.timeline-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+
+.timeline-status {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.timeline-time {
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+.timeline-remark {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.timeline-by {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-muted);
+}

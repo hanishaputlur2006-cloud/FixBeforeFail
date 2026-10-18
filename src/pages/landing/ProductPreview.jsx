@@ -1,4 +1,5 @@
 import { PriorityBadge, StatusBadge, ScoreValue } from '../../components/Badges.jsx'
+import ScoreBreakdown from '../../components/ScoreBreakdown.jsx'
 
 // A static preview of the authority dashboard for the landing page.
 // Clearly labelled as sample data: these are not real reports.
@@ -26,7 +27,7 @@ const SAMPLE_REPORTS = [
     title: 'Streetlight outage, 6 poles',
     place: 'Park Lane',
     category: 'Streetlights',
-    score: 54,
+    score: 46,
     priority: 'medium',
     status: 'under_repair',
   },
@@ -43,12 +44,12 @@ const SAMPLE_REPORTS = [
 
 // Points per factor for FBF-1042. The maximums are the default weights (sum = 100).
 const SAMPLE_BREAKDOWN = [
-  { label: 'Severity', value: 22, max: 25, note: 'Reported as major' },
-  { label: 'Safety impact', value: 18, max: 20, note: 'Pedestrian and traffic risk' },
-  { label: 'Public impact', value: 17, max: 20, note: 'Affects supply to nearby homes' },
-  { label: 'Repeat reports', value: 12, max: 15, note: '4 reports, merged into one issue' },
-  { label: 'Location importance', value: 9, max: 10, note: 'School zone' },
-  { label: 'Time unresolved', value: 8, max: 10, note: 'Open for 6 days' },
+  { label: 'Severity', points: 22, max: 25, note: 'Reported as major' },
+  { label: 'Safety impact', points: 18, max: 20, note: 'Pedestrian and traffic risk' },
+  { label: 'Public impact', points: 17, max: 20, note: 'Affects supply to nearby homes' },
+  { label: 'Repeat reports', points: 12, max: 15, note: '4 reports, merged into one issue' },
+  { label: 'Location importance', points: 9, max: 10, note: 'School zone' },
+  { label: 'Time unresolved', points: 8, max: 10, note: 'Open for 6 days' },
 ]
 
 export default function ProductPreview() {
@@ -103,34 +104,8 @@ export default function ProductPreview() {
           </table>
         </div>
 
-        <aside className="breakdown">
-          <div className="breakdown-head">
-            <span className="breakdown-label">Score breakdown</span>
-            <span className="pq-sub mono">FBF-1042</span>
-          </div>
-          <div className="breakdown-total">
-            <ScoreValue score={86} level="critical" size="lg" />
-            <span className="breakdown-of mono">/100</span>
-            <PriorityBadge level="critical" />
-          </div>
-
-          <ul className="breakdown-list">
-            {SAMPLE_BREAKDOWN.map((f) => (
-              <li key={f.label}>
-                <div className="breakdown-row">
-                  <span>{f.label}</span>
-                  <span className="mono">
-                    {f.value}
-                    <span className="breakdown-max">/{f.max}</span>
-                  </span>
-                </div>
-                <div className="breakdown-track">
-                  <div className="breakdown-fill" style={{ width: `${(f.value / f.max) * 100}%` }} />
-                </div>
-                <div className="breakdown-note">{f.note}</div>
-              </li>
-            ))}
-          </ul>
+        <aside className="preview-breakdown">
+          <ScoreBreakdown score={86} factors={SAMPLE_BREAKDOWN} reportId="FBF-1042" />
         </aside>
       </div>
     </div>

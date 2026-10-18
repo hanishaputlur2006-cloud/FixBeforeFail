@@ -38,3 +38,15 @@
   margin-bottom: 12px;
   color: var(--text-muted);
 }
+
+.placeholder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.placeholder-in-app {
+  min-height: 60vh;
+  padding: 0;
+}
