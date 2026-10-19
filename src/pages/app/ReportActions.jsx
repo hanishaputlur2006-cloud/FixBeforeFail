@@ -81,6 +81,7 @@ export default function ReportActions({ report, onChanged }) {
     const trimmed = note.trim()
     if (action.noteRequired && !trimmed) return setError('Please add a note explaining this change.')
     if (action.needsAssignee && !assigneeId) return setError('Choose a maintenance worker.')
+    if (action.photoRequired && !photo) return setError('Add a photo of the finished repair as evidence.')
     if (!action.to && !trimmed && !photo) return setError('Write a remark or add a photo.')
     if (trimmed.length > 1000) return setError('Keep the note under 1000 characters.')
 
@@ -145,7 +146,7 @@ export default function ReportActions({ report, onChanged }) {
           {action.allowsPhoto && (
             <div className="field">
               <span>
-                Photo <em>optional</em>
+                {action.photoRequired ? 'Evidence photo' : 'Photo'} <em>{action.photoRequired ? 'required' : 'optional'}</em>
               </span>
               <input ref={fileInput} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={handlePhoto} />
               {photo ? (

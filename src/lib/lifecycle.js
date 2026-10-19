@@ -9,7 +9,7 @@ export const TRANSITIONS = [
   { from: 'verified', to: 'closed', roles: ['authority'], noteRequired: true, label: 'Close report', tone: 'danger', hint: 'Close without repair. Explain why.' },
   { from: 'assigned', to: 'under_repair', roles: ['worker', 'authority'], noteRequired: false, label: 'Start repair', tone: 'primary', hint: 'Let everyone know work has begun.', allowsPhoto: true },
   { from: 'assigned', to: 'closed', roles: ['authority'], noteRequired: true, label: 'Close report', tone: 'danger', hint: 'Close without repair. Explain why.' },
-  { from: 'under_repair', to: 'resolved', roles: ['worker', 'authority'], noteRequired: true, label: 'Mark as resolved', tone: 'primary', hint: 'Describe the work done and add a photo of the finished repair.', allowsPhoto: true },
+  { from: 'under_repair', to: 'resolved', roles: ['worker', 'authority'], noteRequired: true, label: 'Mark as resolved', tone: 'primary', hint: 'Describe the work done and add a photo of the finished repair. The photo is required as evidence.', allowsPhoto: true, photoRequired: true },
   { from: 'under_repair', to: 'closed', roles: ['authority'], noteRequired: true, label: 'Close report', tone: 'danger', hint: 'Close without completing the repair. Explain why.' },
   { from: 'resolved', to: 'closed', roles: ['authority'], noteRequired: false, label: 'Confirm fix and close', tone: 'primary', hint: 'The repair has been checked and the report is complete.' },
   { from: 'resolved', to: 'under_repair', roles: ['authority'], noteRequired: true, label: 'Reopen for rework', tone: 'secondary', hint: 'The repair is not good enough. Explain what still needs doing.' },
