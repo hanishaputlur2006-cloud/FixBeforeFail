@@ -4,28 +4,38 @@
   stays consistent and can be re-themed from this one file.
 */
 :root {
-  /* Brand */
-  --navy-950: #0b1a2e;
-  --navy-900: #132640;
-  --navy-800: #1c3354;
-  --navy-700: #2a4569;
-  --navy-300: #a9b8cc;
-  --blue-700: #174db3;
-  --blue-600: #1e5fd8;
-  --blue-50: #edf3fd;
-  --teal-600: #0f9d8a;
-  --teal-500: #14b39c;
-  --teal-50: #e7f6f3;
+  /*
+    Brand palette: limestone, forest green, terracotta, stone, dark ink, white,
+    muted gray-green. Variable names are historical (navy = brand areas,
+    blue = primary actions, teal = accent) so components did not need to change.
+  */
+
+  /* Forest green: navigation, header, hero and footer */
+  --navy-950: #203c32;
+  --navy-900: #182e26;
+  --navy-800: #2e5244;
+  --navy-700: #3c5e50;
+  --navy-300: #b9c7be; /* light text on forest green */
+
+  /* Primary actions, links and selections: forest green */
+  --blue-700: #172c24;
+  --blue-600: #203c32;
+  --blue-50: #e6ece7;
+
+  /* Accent: terracotta, used sparingly */
+  --teal-600: #b65f43;
+  --teal-500: #d07a5d; /* lighter terracotta for use on forest green */
+  --teal-50: #f6e9e3;
 
   /* Neutrals */
-  --bg: #f5f7fa;
+  --bg: #f5f3ed; /* limestone */
   --surface: #ffffff;
-  --surface-muted: #f0f3f7;
-  --border: #e2e7ee;
-  --border-strong: #cdd5e0;
-  --text: #0f1b2d;
-  --text-muted: #5a6a80;
-  --text-subtle: #8392a6;
+  --surface-muted: #eeebe3;
+  --border: #d9d5ca; /* stone */
+  --border-strong: #c2bdb0;
+  --text: #292d29; /* dark ink */
+  --text-muted: #646d64; /* muted gray-green, darkened slightly for small-text contrast */
+  --text-subtle: #737c73; /* muted gray-green */
 
   /* Risk levels: red / amber / slate. Green is reserved for "fixed". */
   --critical: #c9302c;
@@ -52,7 +62,7 @@
   --bar-fill: var(--navy-700);
 
   /* Overlays behind dialogs and the mobile menu */
-  --scrim: rgba(11, 26, 46, 0.5);
+  --scrim: rgba(24, 46, 38, 0.5);
 
   /* Typography */
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -62,8 +72,8 @@
   --radius-sm: 6px;
   --radius: 8px;
   --radius-lg: 12px;
-  --shadow-sm: 0 1px 2px rgba(15, 27, 45, 0.04);
-  --shadow-md: 0 1px 2px rgba(15, 27, 45, 0.04), 0 4px 16px rgba(15, 27, 45, 0.06);
+  --shadow-sm: 0 1px 2px rgba(41, 45, 41, 0.05);
+  --shadow-md: 0 1px 2px rgba(41, 45, 41, 0.05), 0 4px 16px rgba(41, 45, 41, 0.07);
 
   /* Layout */
   --container: 1180px;
@@ -77,6 +87,17 @@
 }
 
 /*
+  On forest-green areas a forest-green button would disappear, so primary
+  buttons there use terracotta (darkened slightly so white text stays readable).
+*/
+.site-header,
+.hero-copy,
+.cta {
+  --blue-600: #a85539;
+  --blue-700: #96492f;
+}
+
+/*
   Dark theme. Applied when <html data-theme="dark"> is set; src/lib/theme.js sets it
   from the user's choice or, by default, from the device setting.
   The navy brand areas (sidebar, header, hero) stay the same in both themes.
@@ -84,20 +105,20 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --blue-700: #2a62cc;
-  --blue-600: #3b78ea;
-  --blue-50: #16264a;
-  --teal-600: #22b39d;
-  --teal-50: #0f2e2b;
+  --blue-700: #285a49;
+  --blue-600: #2f6b57;
+  --blue-50: #1d3229;
+  --teal-600: #d07a5d;
+  --teal-50: #33221c;
 
-  --bg: #0b1220;
-  --surface: #121b2b;
-  --surface-muted: #1a2537;
-  --border: #243149;
-  --border-strong: #33435e;
-  --text: #e6ecf4;
-  --text-muted: #a3b1c4;
-  --text-subtle: #7586a0;
+  --bg: #111814;
+  --surface: #18211c;
+  --surface-muted: #1f2a24;
+  --border: #2b3832;
+  --border-strong: #3a4a42;
+  --text: #eceae3;
+  --text-muted: #a9b2aa;
+  --text-subtle: #869088;
 
   --critical: #e5534e;
   --critical-bg: #3a1b1d;
@@ -117,8 +138,8 @@
   --chart-1: #4c8dff;
   --chart-2: #179884;
 
-  --icon: #a3b1c4;
-  --bar-fill: #6b8bbd;
+  --icon: #a9b2aa;
+  --bar-fill: #6e9a88;
 
   --scrim: rgba(0, 0, 0, 0.6);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
