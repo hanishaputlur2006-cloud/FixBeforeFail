@@ -7,7 +7,7 @@ FixBeforeFail is an infrastructure early-warning platform. Citizens report publi
 ## Tech stack
 
 - React + Vite (frontend)
-- React Router (pages)
+- React Router (pages), Leaflet + OpenStreetMap (map)
 - Supabase (database, authentication, Row Level Security, photo storage)
 - Plain CSS with design tokens in `src/styles/tokens.css`
 
@@ -24,7 +24,7 @@ Requires [Node.js](https://nodejs.org) 20 or newer and a [Supabase](https://supa
 ```bash
 npm install     # first time only
 npm run dev     # start the dev server at http://localhost:5173
-npm test        # run the risk scoring tests
+npm test        # run the scoring and analytics tests
 ```
 
 New accounts are citizens. To make an account an authority or maintenance worker, run in the SQL Editor:
@@ -52,4 +52,4 @@ src/
 - [x] Phase 4: report submission, photos and listing
 - [x] Phase 5: risk scoring engine (see docs/risk-scoring.md)
 - [x] Phase 6: role-based dashboards and report lifecycle
-- [ ] Phase 7: maps, notifications, analytics and testing
+- [x] Phase 7: maps, notifications, analytics and testing

@@ -1,0 +1,122 @@
+.bell {
+  position: relative;
+  margin-left: auto;
+}
+
+.bell .icon-btn {
+  position: relative;
+}
+
+.bell-count {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border: 2px solid var(--surface);
+  border-radius: 9px;
+  background: var(--critical);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 13px;
+  text-align: center;
+}
+
+.bell-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: 360px;
+  max-width: calc(100vw - 2 * var(--gutter));
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.bell-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.bell-head h2 {
+  font-size: 14px;
+}
+
+.bell-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: none;
+  color: var(--blue-600);
+  font: 500 12px var(--font-sans);
+  cursor: pointer;
+}
+
+.bell-list {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.bell-item {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.bell-item:hover {
+  background: var(--bg);
+}
+
+.bell-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 50%;
+}
+
+.bell-item.is-unread .bell-dot {
+  background: var(--blue-600);
+}
+
+.bell-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.bell-msg {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.bell-item.is-unread .bell-msg {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.bell-time {
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+.bell-empty {
+  padding: 24px 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+}

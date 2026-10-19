@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
-  Bell,
   ChartColumn,
   ClipboardList,
   FilePlus2,
@@ -12,6 +11,7 @@ import {
   X,
 } from 'lucide-react'
 import Logo from '../components/Logo.jsx'
+import NotificationBell from '../components/NotificationBell.jsx'
 import { ROLE_LABELS, useAuth } from '../lib/auth.jsx'
 import { initials } from '../lib/format.js'
 import './AppLayout.css'
@@ -27,7 +27,10 @@ const NAV = {
     { to: '/app/map', label: 'Map', icon: MapIcon },
     { to: '/app/analytics', label: 'Analytics', icon: ChartColumn },
   ],
-  worker: [{ to: '/app', label: 'My assignments', icon: ClipboardList, end: true }],
+  worker: [
+    { to: '/app', label: 'My assignments', icon: ClipboardList, end: true },
+    { to: '/app/map', label: 'Map', icon: MapIcon },
+  ],
 }
 
 // The frame around every signed-in page: sidebar, top bar and page content.
@@ -92,9 +95,7 @@ export default function AppLayout() {
 
           <span className="topbar-role">{ROLE_LABELS[role]} workspace</span>
 
-          <button type="button" className="icon-btn topbar-bell" aria-label="Notifications" title="Notifications arrive in phase 7">
-            <Bell size={18} />
-          </button>
+          <NotificationBell userId={profile.id} />
         </header>
 
         <main className="app-content">
