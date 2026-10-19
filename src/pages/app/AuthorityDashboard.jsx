@@ -8,12 +8,10 @@ import { EmptyState } from '../../components/StateViews.jsx'
 import { ScoreValue } from '../../components/Badges.jsx'
 import { CATEGORIES, PRIORITY, PRIORITY_ORDER, STATUS, STATUS_ORDER, TARGET_DAYS } from '../../lib/reportMeta.js'
 import { ageInDays, getPriority, isOpen, isOverdue, sortByRisk } from '../../lib/reportUtils.js'
-import { SAMPLE_REPORTS } from '../../lib/sampleData.js'
 
 const DEFAULT_FILTERS = { search: '', category: 'all', priority: 'all', status: 'open' }
 
-export default function AuthorityDashboard() {
-  const reports = SAMPLE_REPORTS
+export default function AuthorityDashboard({ reports }) {
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
 
   function updateFilter(key, value) {
@@ -109,8 +107,12 @@ export default function AuthorityDashboard() {
             <ReportsTable reports={visible} showAssignee />
           ) : (
             <EmptyState
-              title="No reports match these filters"
-              message="Try a different search term or widen the filters."
+              title={reports.length === 0 ? 'No reports yet' : 'No reports match these filters'}
+              message={
+                reports.length === 0
+                  ? 'Reports submitted by citizens will appear here, ranked by risk.'
+                  : 'Try a different search term or widen the filters.'
+              }
               action={
                 <button type="button" className="btn btn-secondary btn-sm" onClick={() => setFilters(DEFAULT_FILTERS)}>
                   Clear filters

@@ -32,17 +32,6 @@ export const CATEGORIES = {
   equipment: 'Public equipment',
 }
 
-// Scoring factors and their maximum points (they add up to 100).
-// The scoring engine in phase 5 will own these; for now they label sample data.
-export const FACTORS = [
-  { key: 'severity', label: 'Severity', max: 25 },
-  { key: 'safety', label: 'Safety impact', max: 20 },
-  { key: 'publicImpact', label: 'Public impact', max: 20 },
-  { key: 'repeats', label: 'Repeat reports', max: 15 },
-  { key: 'location', label: 'Location importance', max: 10 },
-  { key: 'time', label: 'Time unresolved', max: 10 },
-]
-
 // Days a report may stay unresolved before it counts as overdue.
 export const TARGET_DAYS = {
   critical: 3,

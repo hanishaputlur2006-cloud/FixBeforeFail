@@ -7,19 +7,16 @@ import { PriorityBadge, ScoreValue, StatusBadge } from '../../components/Badges.
 import { CATEGORIES } from '../../lib/reportMeta.js'
 import { ageInDays, getPriority, isOverdue, sortByRisk } from '../../lib/reportUtils.js'
 import { formatAge } from '../../lib/format.js'
-import { useDevRole } from '../../lib/devRole.jsx'
-import { SAMPLE_REPORTS } from '../../lib/sampleData.js'
 
 const TABS = {
   active: { label: 'Active', statuses: ['assigned', 'under_repair'] },
   completed: { label: 'Completed', statuses: ['resolved', 'closed'] },
 }
 
-export default function WorkerDashboard() {
-  const { user } = useDevRole()
+export default function WorkerDashboard({ reports, profile }) {
   const [tab, setTab] = useState('active')
 
-  const assigned = SAMPLE_REPORTS.filter((r) => r.assignee?.id === user.id)
+  const assigned = reports.filter((r) => r.assignee?.id === profile.id)
   const counts = Object.fromEntries(
     Object.entries(TABS).map(([key, t]) => [key, assigned.filter((r) => t.statuses.includes(r.status)).length]),
   )

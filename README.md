@@ -8,16 +8,29 @@ FixBeforeFail is an infrastructure early-warning platform. Citizens report publi
 
 - React + Vite (frontend)
 - React Router (pages)
-- Supabase (database, authentication, storage), planned for phase 3
+- Supabase (database, authentication, Row Level Security; storage in phase 4)
 - Plain CSS with design tokens in `src/styles/tokens.css`
 
 ## Running locally
 
-Requires [Node.js](https://nodejs.org) 20 or newer.
+Requires [Node.js](https://nodejs.org) 20 or newer and a [Supabase](https://supabase.com) project.
+
+1. Copy `.env.example` to `.env.local` and fill in your Supabase project URL and **anon public** key
+   (Supabase dashboard > Project Settings > API Keys). Never use the service role key here.
+2. In the Supabase SQL Editor, run `supabase/001_initial_schema.sql` once.
+3. In Supabase > Authentication > URL Configuration, set the Site URL to `http://localhost:5173`.
+4. Start the app:
 
 ```bash
 npm install     # first time only
 npm run dev     # start the dev server at http://localhost:5173
+```
+
+New accounts are citizens. To make an account an authority or maintenance worker, run in the SQL Editor:
+
+```sql
+update public.profiles set role = 'authority'  -- or 'worker'
+where id = (select id from auth.users where email = 'person@example.com');
 ```
 
 ## Project structure
@@ -33,8 +46,8 @@ src/
 ## Status
 
 - [x] Phase 1: project setup, design system, landing page
-- [ ] Phase 2: navigation and dashboard layouts
-- [ ] Phase 3: Supabase database and authentication
+- [x] Phase 2: navigation and dashboard layouts
+- [x] Phase 3: Supabase database and authentication
 - [ ] Phase 4: report submission, photos and listing
 - [ ] Phase 5: risk scoring engine
 - [ ] Phase 6: role-based dashboards and report lifecycle

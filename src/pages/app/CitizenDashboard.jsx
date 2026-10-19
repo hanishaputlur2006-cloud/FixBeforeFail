@@ -7,14 +7,10 @@ import { PriorityBadge, StatusBadge } from '../../components/Badges.jsx'
 import { STATUS_ORDER } from '../../lib/reportMeta.js'
 import { getPriority, isOpen } from '../../lib/reportUtils.js'
 import { formatDate } from '../../lib/format.js'
-import { useDevRole } from '../../lib/devRole.jsx'
-import { SAMPLE_REPORTS } from '../../lib/sampleData.js'
 
-export default function CitizenDashboard() {
-  const { user } = useDevRole()
-  const mine = SAMPLE_REPORTS.filter((r) => r.reporter.id === user.id).sort(
-    (a, b) => new Date(b.reportedAt) - new Date(a.reportedAt),
-  )
+export default function CitizenDashboard({ reports, profile }) {
+  // Newest first (the list already arrives in that order).
+  const mine = reports.filter((r) => r.reporter?.id === profile.id)
 
   const newReportButton = (
     <Link to="/app/new-report" className="btn btn-primary">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
   Bell,
   ChartColumn,
@@ -12,8 +12,7 @@ import {
   X,
 } from 'lucide-react'
 import Logo from '../components/Logo.jsx'
-import { useDevRole } from '../lib/devRole.jsx'
-import { DEMO_USERS } from '../lib/sampleData.js'
+import { ROLE_LABELS, useAuth } from '../lib/auth.jsx'
 import { initials } from '../lib/format.js'
 import './AppLayout.css'
 
@@ -33,14 +32,22 @@ const NAV = {
 
 // The frame around every signed-in page: sidebar, top bar and page content.
 export default function AppLayout() {
-  const { role, user, setRole } = useDevRole()
+  const { profile, signOut } = useAuth()
+  const role = profile.role
+  const name = profile.full_name || 'Unnamed user'
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
   // Close the mobile menu whenever the page changes.
   useEffect(() => {
     setMenuOpen(false)
   }, [location.pathname])
+
+  async function handleSignOut() {
+    await signOut()
+    navigate('/', { replace: true })
+  }
 
   return (
     <div className={`app ${menuOpen ? 'menu-open' : ''}`}>
@@ -64,14 +71,14 @@ export default function AppLayout() {
         </nav>
 
         <div className="sidebar-user">
-          <span className="avatar">{initials(user.name)}</span>
+          <span className="avatar">{initials(name)}</span>
           <div className="sidebar-user-text">
-            <span className="sidebar-user-name">{user.name}</span>
-            <span className="sidebar-user-role">{user.roleLabel}</span>
+            <span className="sidebar-user-name">{name}</span>
+            <span className="sidebar-user-role">{ROLE_LABELS[role]}</span>
           </div>
-          <Link to="/" className="icon-btn icon-btn-dark" aria-label="Exit to home page" title="Exit to home page">
+          <button type="button" className="icon-btn icon-btn-dark" onClick={handleSignOut} aria-label="Log out" title="Log out">
             <LogOut size={18} />
-          </Link>
+          </button>
         </div>
       </aside>
 
@@ -83,23 +90,7 @@ export default function AppLayout() {
             <Menu size={20} />
           </button>
 
-          {/* Development only: switch which role's dashboard you are previewing. */}
-          <div className="dev-switcher">
-            <span className="dev-tag mono">Demo</span>
-            <div className="segmented" role="group" aria-label="Preview as role">
-              {Object.values(DEMO_USERS).map((u) => (
-                <button
-                  key={u.role}
-                  type="button"
-                  className={u.role === role ? 'is-active' : undefined}
-                  aria-pressed={u.role === role}
-                  onClick={() => setRole(u.role)}
-                >
-                  {u.role === 'worker' ? 'Worker' : u.role === 'authority' ? 'Authority' : 'Citizen'}
-                </button>
-              ))}
-            </div>
-          </div>
+          <span className="topbar-role">{ROLE_LABELS[role]} workspace</span>
 
           <button type="button" className="icon-btn topbar-bell" aria-label="Notifications" title="Notifications arrive in phase 7">
             <Bell size={18} />

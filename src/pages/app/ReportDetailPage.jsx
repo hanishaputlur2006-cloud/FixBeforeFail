@@ -7,12 +7,14 @@ import { PriorityBadge, StatusBadge } from '../../components/Badges.jsx'
 import { CATEGORIES } from '../../lib/reportMeta.js'
 import { getPriority, isOverdue } from '../../lib/reportUtils.js'
 import { formatDate } from '../../lib/format.js'
-import { getSampleReport } from '../../lib/sampleData.js'
+import { fetchReportByRef } from '../../lib/reportsApi.js'
+import { useAsync } from '../../lib/useAsync.js'
+import { ErrorState, LoadingState } from '../../components/StateViews.jsx'
 import './app.css'
 
 export default function ReportDetailPage() {
   const { id } = useParams()
-  const report = getSampleReport(id)
+  const { data: report, loading, error, reload } = useAsync(() => fetchReportByRef(id), [id])
 
   const backLink = (
     <Link to="/app" className="back-link">
@@ -21,12 +23,19 @@ export default function ReportDetailPage() {
     </Link>
   )
 
+  if (loading) return <LoadingState label="Loading report" />
+  if (error) return <ErrorState message={error.message} onRetry={reload} />
+
   if (!report) {
     return (
       <>
         {backLink}
         <div className="card">
-          <EmptyState icon={FileQuestion} title="Report not found" message={`There is no report with the ID ${id}.`} />
+          <EmptyState
+            icon={FileQuestion}
+            title="Report not found"
+            message={`There is no report ${id}, or you do not have access to it.`}
+          />
         </div>
       </>
     )
@@ -64,7 +73,7 @@ export default function ReportDetailPage() {
               </div>
               <div>
                 <dt>Reported by</dt>
-                <dd>{report.reporter.name}</dd>
+                <dd>{report.reporter?.name ?? 'Citizen'}</dd>
               </div>
               <div>
                 <dt>Reported on</dt>
@@ -95,7 +104,8 @@ export default function ReportDetailPage() {
         <aside className="card detail-card detail-score">
           <ScoreBreakdown score={report.score} factors={report.factors} />
           <p className="detail-score-note">
-            Rule-based score from six weighted factors. Each factor shows the points it contributed.
+            Rule-based score from six weighted factors. Missing details receive a neutral score and are marked as not
+            provided.
           </p>
         </aside>
       </div>

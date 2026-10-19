@@ -1,30 +1,33 @@
-import { Routes, Route, Link } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import LandingPage from './pages/landing/LandingPage.jsx'
 import PlaceholderPage from './pages/PlaceholderPage.jsx'
+import { LoginPage, RegisterPage } from './pages/auth/AuthPages.jsx'
 import AppLayout from './layouts/AppLayout.jsx'
+import RequireAuth from './components/RequireAuth.jsx'
 import DashboardPage from './pages/app/DashboardPage.jsx'
 import ReportDetailPage from './pages/app/ReportDetailPage.jsx'
-import { DevRoleProvider } from './lib/devRole.jsx'
-
-// Until real login exists (phase 3), the login page offers a demo preview instead.
-const demoLink = (
-  <Link to="/app" className="btn btn-primary">
-    Preview the app with demo data
-  </Link>
-)
+import { AuthProvider } from './lib/auth.jsx'
 
 // Each <Route> maps a URL to a page component.
-// Routes nested under /app share the AppLayout (sidebar and top bar).
+// Everything under /app requires a signed-in user and shares the AppLayout.
 export default function App() {
   return (
-    <DevRoleProvider>
+    <AuthProvider>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<PlaceholderPage title="Log in" phase={3} extraAction={demoLink} />} />
-        <Route path="/register" element={<PlaceholderPage title="Create an account" phase={3} extraAction={demoLink} />} />
-        <Route path="/report" element={<PlaceholderPage title="Report an issue" phase={4} />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        {/* "Report an issue" buttons: sends visitors to log in first, then to the form. */}
+        <Route path="/report" element={<Navigate to="/app/new-report" replace />} />
 
-        <Route path="/app" element={<AppLayout />}>
+        <Route
+          path="/app"
+          element={
+            <RequireAuth>
+              <AppLayout />
+            </RequireAuth>
+          }
+        >
           <Route index element={<DashboardPage />} />
           <Route path="reports/:id" element={<ReportDetailPage />} />
           <Route path="new-report" element={<PlaceholderPage title="New report" phase={4} inApp />} />
@@ -35,6 +38,6 @@ export default function App() {
 
         <Route path="*" element={<PlaceholderPage title="Page not found" notFound />} />
       </Routes>
-    </DevRoleProvider>
+    </AuthProvider>
   )
 }
