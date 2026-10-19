@@ -729,3 +729,60 @@
   font-size: 14px;
   color: var(--text-muted);
 }
+
+/* Repair rating */
+.stars {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--border-strong);
+}
+
+.stars .is-on,
+.rating-input .is-on {
+  color: #e0a526;
+  fill: #e0a526;
+}
+
+.rating-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rating-comment {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.rating-date {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+.rating-input {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rating-input button {
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--border-strong);
+  cursor: pointer;
+}
+
+.rating-input button:hover {
+  background: var(--surface-muted);
+}
+
+.rating-label {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}

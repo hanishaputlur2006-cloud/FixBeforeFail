@@ -15,6 +15,7 @@ import { DetailSkeleton } from '../../components/Skeletons.jsx'
 import { useAuth } from '../../lib/auth.jsx'
 import DuplicatesPanel from './DuplicatesPanel.jsx'
 import ReportActions from './ReportActions.jsx'
+import FeedbackPanel from './FeedbackPanel.jsx'
 import './app.css'
 
 export default function ReportDetailPage() {
@@ -123,9 +124,13 @@ export default function ReportDetailPage() {
               <div>
                 <dt>Related reports</dt>
                 <dd>
-                  {report.duplicates > 1
-                    ? `${report.duplicates - 1} duplicate ${report.duplicates === 2 ? 'report' : 'reports'} merged into this one`
-                    : 'None'}
+                  {[
+                    report.duplicates > 1 && `${report.duplicates - 1} merged ${report.duplicates === 2 ? 'duplicate' : 'duplicates'}`,
+                    report.confirmations > 0 &&
+                      `${report.confirmations} ${report.confirmations === 1 ? 'citizen confirmed' : 'citizens confirmed'} this`,
+                  ]
+                    .filter(Boolean)
+                    .join(', ') || 'None'}
                 </dd>
               </div>
             </dl>
@@ -139,6 +144,8 @@ export default function ReportDetailPage() {
               <EmptyState icon={ImageOff} title="No photo" message="This report was submitted without a photo." />
             )}
           </section>
+
+          <FeedbackPanel report={report} onChanged={reload} />
 
           <section className="card detail-card">
             <h2>Status history</h2>

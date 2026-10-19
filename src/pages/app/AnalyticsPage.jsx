@@ -6,7 +6,7 @@ import { PriorityBadge } from '../../components/Badges.jsx'
 import { BarList, GroupedColumns, SERIES } from '../../components/Charts.jsx'
 import { EmptyState, ErrorState, LoadingState } from '../../components/StateViews.jsx'
 import { PRIORITY_ORDER, STATUS } from '../../lib/reportMeta.js'
-import { fetchReports } from '../../lib/reportsApi.js'
+import { fetchRatings, fetchReports } from '../../lib/reportsApi.js'
 import { useAsync } from '../../lib/useAsync.js'
 import { computeAnalytics } from '../../lib/analytics.js'
 import './app.css'
@@ -16,6 +16,7 @@ const weekLabel = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'sho
 
 export default function AnalyticsPage() {
   const { data: reports, loading, error, reload } = useAsync(fetchReports, [])
+  const { data: ratings } = useAsync(fetchRatings, [])
   const a = useMemo(() => (reports ? computeAnalytics(reports) : null), [reports])
 
   if (loading && !reports) return <LoadingState label="Loading analytics" />
@@ -51,9 +52,13 @@ export default function AnalyticsPage() {
         <StatCard
           label="Average repair time"
           value={avg == null ? 'None yet' : `${avg < 10 ? avg.toFixed(1) : Math.round(avg)} d`}
-          hint="From report to resolved"
+          hint={`${a.totals.resolvedLast30} repaired in the last 30 days`}
         />
-        <StatCard label="Repaired, last 30 days" value={a.totals.resolvedLast30} />
+        <StatCard
+          label="Citizen satisfaction"
+          value={ratings?.length ? `${(ratings.reduce((s, x) => s + x, 0) / ratings.length).toFixed(1)} / 5` : 'No ratings'}
+          hint={ratings?.length ? `From ${ratings.length} ${ratings.length === 1 ? 'rating' : 'ratings'}` : 'Citizens rate closed repairs'}
+        />
       </div>
 
       <section className="card analytics-card">

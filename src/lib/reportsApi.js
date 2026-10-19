@@ -247,6 +247,13 @@ export async function submitFeedback(reportUuid, rating, comment) {
   if (error) throw error
 }
 
+// All repair ratings (authorities only, enforced by the database), for analytics.
+export async function fetchRatings() {
+  const { data, error } = await supabase.from('report_feedback').select('rating')
+  if (error) throw error
+  return data.map((r) => r.rating)
+}
+
 // Totals for the public landing page. Works without logging in.
 export async function fetchPublicStats() {
   const { data, error } = await supabase.rpc('public_stats')
