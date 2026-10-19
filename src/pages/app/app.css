@@ -512,3 +512,92 @@
   flex-shrink: 0;
   margin-top: 1px;
 }
+
+/* Duplicates */
+.report-card-merged {
+  margin: -6px 0 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.notice-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 14px;
+}
+
+.notice-info svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--navy-700);
+}
+
+.notice-info a {
+  color: var(--blue-600);
+  font-weight: 500;
+}
+
+.detail-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 88px;
+}
+
+.detail-side .detail-score {
+  position: static;
+}
+
+.dup-card h2 {
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+
+.dup-desc {
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.dup-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+
+.dup-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dup-title:hover {
+  color: var(--blue-600);
+}
+
+.dup-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.dup-list .btn {
+  align-self: flex-start;
+}
+
+@media (max-width: 1100px) {
+  .detail-side {
+    position: static;
+  }
+}
+
+.detail-score-note a {
+  color: var(--blue-600);
+}

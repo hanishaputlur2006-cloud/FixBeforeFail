@@ -1,5 +1,5 @@
 import { Link, useLocation, useParams } from 'react-router-dom'
-import { ArrowLeft, CircleCheck, FileQuestion, ImageOff, MapPin } from 'lucide-react'
+import { ArrowLeft, CircleCheck, FileQuestion, ImageOff, MapPin, Merge } from 'lucide-react'
 import ScoreBreakdown from '../../components/ScoreBreakdown.jsx'
 import StatusTimeline from '../../components/StatusTimeline.jsx'
 import { EmptyState } from '../../components/StateViews.jsx'
@@ -10,6 +10,8 @@ import { formatDate } from '../../lib/format.js'
 import { fetchReportByRef, getPhotoUrl } from '../../lib/reportsApi.js'
 import { useAsync } from '../../lib/useAsync.js'
 import { ErrorState, LoadingState } from '../../components/StateViews.jsx'
+import { useAuth } from '../../lib/auth.jsx'
+import DuplicatesPanel from './DuplicatesPanel.jsx'
 import './app.css'
 
 // Private photos are shown through a temporary signed link.
@@ -27,6 +29,7 @@ function ReportPhoto({ path }) {
 export default function ReportDetailPage() {
   const { id } = useParams()
   const location = useLocation()
+  const { profile } = useAuth()
   const { data: report, loading, error, reload } = useAsync(() => fetchReportByRef(id), [id])
 
   const backLink = (
@@ -65,6 +68,16 @@ export default function ReportDetailPage() {
           <CircleCheck size={18} />
           <span>
             Report submitted. It has been scored and sent to the authorities for review. You can follow its progress here.
+          </span>
+        </div>
+      )}
+
+      {report.mergedInto && (
+        <div className="notice-info" role="status">
+          <Merge size={18} />
+          <span>
+            This report was merged into <Link to={`/app/reports/${report.mergedInto}`}>{report.mergedInto}</Link>, which
+            describes the same problem. Follow that report to see the repair progress.
           </span>
         </div>
       )}
@@ -117,7 +130,11 @@ export default function ReportDetailPage() {
               </div>
               <div>
                 <dt>Related reports</dt>
-                <dd>{report.duplicates > 1 ? `${report.duplicates} reports merged into this issue` : 'None'}</dd>
+                <dd>
+                  {report.duplicates > 1
+                    ? `${report.duplicates - 1} duplicate ${report.duplicates === 2 ? 'report' : 'reports'} merged into this one`
+                    : 'None'}
+                </dd>
               </div>
             </dl>
           </section>
@@ -137,12 +154,18 @@ export default function ReportDetailPage() {
           </section>
         </div>
 
-        <aside className="card detail-card detail-score">
-          <ScoreBreakdown score={report.score} factors={report.factors} />
-          <p className="detail-score-note">
-            Rule-based score from six weighted factors. Missing details receive a neutral score and are marked as not
-            provided.
-          </p>
+        <aside className="detail-side">
+          <div className="card detail-card detail-score">
+            <ScoreBreakdown score={report.score} factors={report.factors} adjustment={report.adjustment} />
+            <p className="detail-score-note">
+              Rule-based score from six weighted factors. Missing details receive a neutral score and are marked as not
+              provided. <Link to="/#scoring">How scoring works</Link>
+            </p>
+          </div>
+
+          {profile.role === 'authority' && !report.duplicateOf && report.status !== 'resolved' && report.status !== 'closed' && (
+            <DuplicatesPanel report={report} onMerged={reload} />
+          )}
         </aside>
       </div>
     </>

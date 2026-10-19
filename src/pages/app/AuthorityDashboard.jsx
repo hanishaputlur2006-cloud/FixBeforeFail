@@ -11,7 +11,9 @@ import { ageInDays, getPriority, isOpen, isOverdue, sortByRisk } from '../../lib
 
 const DEFAULT_FILTERS = { search: '', category: 'all', priority: 'all', status: 'open' }
 
-export default function AuthorityDashboard({ reports }) {
+export default function AuthorityDashboard({ reports: allReports }) {
+  // Merged duplicates are counted on their original report, so list each issue once.
+  const reports = useMemo(() => allReports.filter((r) => !r.duplicateOf), [allReports])
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
 
   function updateFilter(key, value) {

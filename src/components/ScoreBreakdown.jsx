@@ -3,8 +3,9 @@ import { getPriority } from '../lib/reportUtils.js'
 import './ScoreBreakdown.css'
 
 // Shows a report's total score and how much each factor contributed.
-// factors: [{ label, points, max, note }]
-export default function ScoreBreakdown({ score, factors, reportId }) {
+// factors: [{ label, points, max, note, missing }]
+// adjustment: { points, note } when a safety rule raised the score
+export default function ScoreBreakdown({ score, factors, adjustment, reportId }) {
   const level = getPriority(score)
 
   return (
@@ -33,10 +34,20 @@ export default function ScoreBreakdown({ score, factors, reportId }) {
             <div className="breakdown-track">
               <div className="breakdown-fill" style={{ width: `${(f.points / f.max) * 100}%` }} />
             </div>
-            {f.note && <div className="breakdown-note">{f.note}</div>}
+            {f.note && <div className={`breakdown-note ${f.missing ? 'is-missing' : ''}`}>{f.note}</div>}
           </li>
         ))}
       </ul>
+
+      {adjustment && (
+        <div className="breakdown-adjustment">
+          <div className="breakdown-row">
+            <span>Safety rule</span>
+            <span className="mono">+{adjustment.points}</span>
+          </div>
+          <div className="breakdown-note">{adjustment.note}</div>
+        </div>
+      )}
     </div>
   )
 }

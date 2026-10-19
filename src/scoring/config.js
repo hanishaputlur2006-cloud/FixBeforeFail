@@ -1,6 +1,7 @@
 // Risk scoring configuration.
-// Change weights and point tables here; the engine in scoreReport.js reads from this file.
+// Change weights, point tables and rules here; the engine in scoreReport.js reads from this file.
 // Each factor's points never exceed its max, and the maxes add up to 100.
+// Full explanation: docs/risk-scoring.md
 
 export const SCORING_CONFIG = {
   severity: {
@@ -29,7 +30,8 @@ export const SCORING_CONFIG = {
   repeats: {
     label: 'Repeat reports',
     max: 15,
-    // Points per additional independent report, capped at max so volume alone cannot dominate.
+    // A second independent report adds firstExtraBonus + pointsPerExtraReport,
+    // each further one adds pointsPerExtraReport, capped at max so volume alone cannot dominate.
     pointsPerExtraReport: 3,
     firstExtraBonus: 3,
   },
@@ -58,4 +60,27 @@ export const SCORING_CONFIG = {
   },
 }
 
-export const NEUTRAL_SHARE = 0.5 // Missing information scores half the factor's max and is flagged.
+// Missing information scores this share of the factor's max and is flagged.
+export const NEUTRAL_SHARE = 0.5
+
+// Safety rules: a minimum score for dangerous situations, so a hazard can never be
+// outranked just because other factors are low. Checked in order; the first match applies.
+export const SAFETY_FLOORS = [
+  {
+    when: (r) => r.safety_risk === 'immediate' && (r.severity === 'critical' || r.severity === 'major'),
+    minScore: 75,
+    note: 'Immediate danger with major or critical damage is always Critical priority',
+  },
+  {
+    when: (r) => r.safety_risk === 'immediate',
+    minScore: 50,
+    note: 'Immediate danger is always at least High priority',
+  },
+]
+
+// Possible-duplicate detection (suggestions only; an authority decides).
+export const DUPLICATE_RULES = {
+  maxDistanceMeters: 150, // when both reports have GPS coordinates
+  minTextSimilarity: 0.5, // share of location words in common, 0 to 1
+  maxDaysApart: 60,
+}

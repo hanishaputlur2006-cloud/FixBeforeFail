@@ -24,6 +24,7 @@ Requires [Node.js](https://nodejs.org) 20 or newer and a [Supabase](https://supa
 ```bash
 npm install     # first time only
 npm run dev     # start the dev server at http://localhost:5173
+npm test        # run the risk scoring tests
 ```
 
 New accounts are citizens. To make an account an authority or maintenance worker, run in the SQL Editor:
@@ -49,6 +50,6 @@ src/
 - [x] Phase 2: navigation and dashboard layouts
 - [x] Phase 3: Supabase database and authentication
 - [x] Phase 4: report submission, photos and listing
-- [ ] Phase 5: risk scoring engine
+- [x] Phase 5: risk scoring engine (see docs/risk-scoring.md)
 - [ ] Phase 6: role-based dashboards and report lifecycle
 - [ ] Phase 7: maps, notifications, analytics and testing

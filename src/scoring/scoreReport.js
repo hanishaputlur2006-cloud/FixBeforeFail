@@ -1,4 +1,4 @@
-import { SCORING_CONFIG as C, NEUTRAL_SHARE } from './config.js'
+import { SCORING_CONFIG as C, NEUTRAL_SHARE, SAFETY_FLOORS } from './config.js'
 
 const DAY_MS = 24 * 60 * 60 * 1000
 
@@ -22,11 +22,15 @@ function publicImpact(category, locationType) {
   return { points, note }
 }
 
-function repeats(count) {
+export function repeatPoints(reportCount) {
   const f = C.repeats
-  if (count <= 1) return { points: 0, note: 'Single report' }
-  const points = Math.min(f.max, f.firstExtraBonus + f.pointsPerExtraReport * (count - 1))
-  return { points, note: `${count} reports, merged into one issue` }
+  if (reportCount <= 1) return 0
+  return Math.min(f.max, f.firstExtraBonus + f.pointsPerExtraReport * (reportCount - 1))
+}
+
+function repeats(reportCount) {
+  if (reportCount <= 1) return { points: 0, note: 'Single report' }
+  return { points: repeatPoints(reportCount), note: `${reportCount} reports, merged into one issue` }
 }
 
 function timeOpen(createdAt, resolvedAt, now) {
@@ -39,16 +43,22 @@ function timeOpen(createdAt, resolvedAt, now) {
 }
 
 /**
- * Scores one report from its stored details.
- * Returns { score, factors: [{ key, label, max, points, note, missing }] }.
- * The score is the plain sum of the factor points, so it always adds up.
+ * Scores one report from its stored details (a database row).
+ *
+ * Returns {
+ *   score:      final score, 0 to 100
+ *   baseScore:  plain sum of the six factors
+ *   factors:    [{ key, label, max, points, note, missing }]
+ *   adjustment: { points, note } when a safety rule raised the score, otherwise null
+ * }
+ * score always equals baseScore + adjustment.points, so the breakdown adds up.
  */
 export function scoreReport(report, now = Date.now()) {
   const results = {
     severity: fromTable(C.severity, report.severity),
     safety: fromTable(C.safety, report.safety_risk),
     publicImpact: publicImpact(report.category, report.location_type),
-    repeats: repeats(report.report_count ?? 1),
+    repeats: repeats(1 + (report.duplicate_count ?? 0)),
     location: fromTable(C.location, report.location_type),
     time: timeOpen(report.created_at, report.resolved_at, now),
   }
@@ -62,5 +72,9 @@ export function scoreReport(report, now = Date.now()) {
     missing: Boolean(r.missing),
   }))
 
-  return { score: factors.reduce((sum, f) => sum + f.points, 0), factors }
+  const baseScore = factors.reduce((sum, f) => sum + f.points, 0)
+  const floor = SAFETY_FLOORS.find((rule) => rule.when(report))
+  const adjustment = floor && floor.minScore > baseScore ? { points: floor.minScore - baseScore, note: floor.note } : null
+
+  return { score: baseScore + (adjustment?.points ?? 0), baseScore, factors, adjustment }
 }

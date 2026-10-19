@@ -65,3 +65,21 @@
   font-size: 12px;
   color: var(--text-muted);
 }
+
+.breakdown-note.is-missing {
+  font-style: italic;
+  color: var(--text-subtle);
+}
+
+.breakdown-adjustment {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--critical-bg);
+  border-left: 3px solid var(--critical);
+  border-radius: var(--radius-sm);
+  background: #fffafa;
+}
+
+.breakdown-adjustment .breakdown-row span:last-child {
+  color: var(--critical);
+}

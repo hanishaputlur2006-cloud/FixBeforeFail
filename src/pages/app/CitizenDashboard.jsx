@@ -64,6 +64,8 @@ export default function CitizenDashboard({ reports, profile }) {
                     ))}
                   </div>
 
+                  {r.mergedInto && <p className="report-card-merged">Merged into {r.mergedInto}, which tracks the repair</p>}
+
                   <div className="report-card-foot">
                     <StatusBadge status={r.status} />
                     <span className="report-card-date">Reported {formatDate(r.reportedAt)}</span>
