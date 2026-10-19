@@ -51,5 +51,5 @@ src/
 - [x] Phase 3: Supabase database and authentication
 - [x] Phase 4: report submission, photos and listing
 - [x] Phase 5: risk scoring engine (see docs/risk-scoring.md)
-- [ ] Phase 6: role-based dashboards and report lifecycle
+- [x] Phase 6: role-based dashboards and report lifecycle
 - [ ] Phase 7: maps, notifications, analytics and testing

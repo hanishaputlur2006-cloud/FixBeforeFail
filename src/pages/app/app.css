@@ -601,3 +601,120 @@
 .detail-score-note a {
   color: var(--blue-600);
 }
+
+/* Lifecycle actions */
+.actions-card h2 {
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+.action-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.action-list .btn {
+  width: 100%;
+}
+
+.btn-danger-text {
+  color: var(--critical);
+}
+
+.btn-danger {
+  background: var(--critical);
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: #a92623;
+}
+
+.action-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.action-form h3 {
+  font-size: 14px;
+}
+
+.action-hint {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.action-form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.action-form .field > span {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.action-form em {
+  margin-left: 4px;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-subtle);
+}
+
+.action-form .input {
+  width: 100%;
+}
+
+.action-form .textarea {
+  height: auto;
+  padding: 10px 12px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.action-photo {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.action-photo img {
+  width: 120px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.action-form .form-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid #f2c4c2;
+  border-radius: var(--radius-sm);
+  background: var(--critical-bg);
+  color: var(--critical);
+  font-size: 14px;
+}
+
+.action-form .form-error svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.private-photo img {
+  display: block;
+}

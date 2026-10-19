@@ -68,3 +68,33 @@
   font-size: 13px;
   color: var(--text-muted);
 }
+
+.timeline li.is-remark .timeline-marker {
+  border-style: dashed;
+}
+
+.timeline li.is-remark.is-current .timeline-marker {
+  background: var(--surface);
+}
+
+.timeline-photo {
+  display: block;
+  width: 180px;
+  margin-top: 8px;
+}
+
+.timeline-photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.photo-placeholder {
+  width: 180px;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+}

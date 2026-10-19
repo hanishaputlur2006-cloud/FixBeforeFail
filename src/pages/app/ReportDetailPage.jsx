@@ -7,24 +7,14 @@ import { PriorityBadge, StatusBadge } from '../../components/Badges.jsx'
 import { CATEGORIES, LOCATION_TYPES } from '../../lib/reportMeta.js'
 import { getPriority, isOverdue } from '../../lib/reportUtils.js'
 import { formatDate } from '../../lib/format.js'
-import { fetchReportByRef, getPhotoUrl } from '../../lib/reportsApi.js'
+import { fetchReportByRef } from '../../lib/reportsApi.js'
 import { useAsync } from '../../lib/useAsync.js'
 import { ErrorState, LoadingState } from '../../components/StateViews.jsx'
+import PrivatePhoto from '../../components/PrivatePhoto.jsx'
 import { useAuth } from '../../lib/auth.jsx'
 import DuplicatesPanel from './DuplicatesPanel.jsx'
+import ReportActions from './ReportActions.jsx'
 import './app.css'
-
-// Private photos are shown through a temporary signed link.
-function ReportPhoto({ path }) {
-  const { data: url, loading, error } = useAsync(() => getPhotoUrl(path), [path])
-  if (loading) return <LoadingState label="Loading photo" />
-  if (error) return <p className="field-error">The photo could not be loaded.</p>
-  return (
-    <a href={url} target="_blank" rel="noreferrer" className="detail-photo">
-      <img src={url} alt="Photo submitted with the report" />
-    </a>
-  )
-}
 
 export default function ReportDetailPage() {
   const { id } = useParams()
@@ -39,8 +29,9 @@ export default function ReportDetailPage() {
     </Link>
   )
 
-  if (loading) return <LoadingState label="Loading report" />
-  if (error) return <ErrorState message={error.message} onRetry={reload} />
+  // While refreshing after an action, keep showing the current report.
+  if (loading && !report) return <LoadingState label="Loading report" />
+  if (error && !report) return <ErrorState message={error.message} onRetry={reload} />
 
   if (!report) {
     return (
@@ -142,7 +133,7 @@ export default function ReportDetailPage() {
           <section className="card detail-card">
             <h2>Photo</h2>
             {report.photoPath ? (
-              <ReportPhoto path={report.photoPath} />
+              <PrivatePhoto path={report.photoPath} alt="Photo submitted with the report" className="detail-photo" />
             ) : (
               <EmptyState icon={ImageOff} title="No photo" message="This report was submitted without a photo." />
             )}
@@ -155,6 +146,8 @@ export default function ReportDetailPage() {
         </div>
 
         <aside className="detail-side">
+          <ReportActions report={report} onChanged={reload} />
+
           <div className="card detail-card detail-score">
             <ScoreBreakdown score={report.score} factors={report.factors} adjustment={report.adjustment} />
             <p className="detail-score-note">

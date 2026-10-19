@@ -75,7 +75,7 @@ export async function fetchReportByRef(ref) {
 
   const { data: events, error: eventsError } = await supabase
     .from('report_events')
-    .select('status, note, created_at, actor:profiles ( full_name )')
+    .select('status, note, kind, photo_path, created_at, actor:profiles ( full_name )')
     .eq('report_id', data.id)
     .order('created_at', { ascending: true })
   if (eventsError) throw eventsError
@@ -87,11 +87,24 @@ export async function fetchReportByRef(ref) {
       at: e.created_at,
       by: e.actor?.full_name || null,
       remark: e.note,
+      kind: e.kind,
+      photoPath: e.photo_path,
     })),
   }
 }
 
 const PHOTO_BUCKET = 'report-images'
+
+// Uploads a photo into the signed-in user's own folder and returns its path.
+async function uploadPhoto(blob) {
+  const { data: auth } = await supabase.auth.getUser()
+  const userId = auth.user?.id
+  if (!userId) throw new Error('You are signed out. Please log in again.')
+  const path = `${userId}/${crypto.randomUUID()}.jpg`
+  const { error } = await supabase.storage.from(PHOTO_BUCKET).upload(path, blob, { contentType: 'image/jpeg' })
+  if (error) throw new Error(`Photo upload failed: ${error.message}`)
+  return path
+}
 
 /**
  * Saves a new report. If a photo is given it is uploaded first, then the report
@@ -102,14 +115,7 @@ export async function createReport(input, photoBlob) {
   const userId = auth.user?.id
   if (!userId) throw new Error('You are signed out. Please log in again.')
 
-  let photoPath = null
-  if (photoBlob) {
-    photoPath = `${userId}/${crypto.randomUUID()}.jpg`
-    const { error } = await supabase.storage
-      .from(PHOTO_BUCKET)
-      .upload(photoPath, photoBlob, { contentType: 'image/jpeg' })
-    if (error) throw new Error(`Photo upload failed: ${error.message}`)
-  }
+  const photoPath = photoBlob ? await uploadPhoto(photoBlob) : null
 
   const { data, error } = await supabase
     .from('reports')
@@ -156,4 +162,50 @@ export async function mergeReport(report, target) {
     })
     .eq('id', report.uuid)
   if (error) throw error
+}
+
+// Moves a report to its next status. The database checks the role, the order of
+// steps and required notes, and records the change in the history.
+export async function updateReportStatus(report, { status, note, photoBlob, assigneeId }) {
+  const photoPath = photoBlob ? await uploadPhoto(photoBlob) : null
+  const { error } = await supabase.rpc('update_report_status', {
+    p_report: report.uuid,
+    p_status: status,
+    p_note: note || null,
+    p_photo: photoPath,
+    p_assignee: assigneeId || null,
+  })
+  if (error) {
+    if (photoPath) await supabase.storage.from(PHOTO_BUCKET).remove([photoPath])
+    throw error
+  }
+}
+
+// Adds a remark (and optional progress photo) without changing the status.
+export async function addReportRemark(report, { note, photoBlob }) {
+  const photoPath = photoBlob ? await uploadPhoto(photoBlob) : null
+  const { error } = await supabase.rpc('add_report_remark', {
+    p_report: report.uuid,
+    p_note: note || null,
+    p_photo: photoPath,
+  })
+  if (error) {
+    if (photoPath) await supabase.storage.from(PHOTO_BUCKET).remove([photoPath])
+    throw error
+  }
+}
+
+// Maintenance workers with how many open jobs each has, for the assignment list.
+export async function fetchWorkers() {
+  const [{ data: workers, error }, { data: jobs, error: jobsError }] = await Promise.all([
+    supabase.from('profiles').select('id, full_name').eq('role', 'worker').order('full_name'),
+    supabase.from('reports').select('assigned_to').in('status', ['assigned', 'under_repair']),
+  ])
+  if (error) throw error
+  if (jobsError) throw jobsError
+  return workers.map((w) => ({
+    id: w.id,
+    name: w.full_name || 'Unnamed worker',
+    activeJobs: jobs.filter((j) => j.assigned_to === w.id).length,
+  }))
 }
