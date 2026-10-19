@@ -9,8 +9,9 @@ import { getPriority, isOverdue } from '../../lib/reportUtils.js'
 import { formatDate } from '../../lib/format.js'
 import { fetchReportByRef } from '../../lib/reportsApi.js'
 import { useAsync } from '../../lib/useAsync.js'
-import { ErrorState, LoadingState } from '../../components/StateViews.jsx'
+import { ErrorState } from '../../components/StateViews.jsx'
 import PrivatePhoto from '../../components/PrivatePhoto.jsx'
+import { DetailSkeleton } from '../../components/Skeletons.jsx'
 import { useAuth } from '../../lib/auth.jsx'
 import DuplicatesPanel from './DuplicatesPanel.jsx'
 import ReportActions from './ReportActions.jsx'
@@ -30,7 +31,7 @@ export default function ReportDetailPage() {
   )
 
   // While refreshing after an action, keep showing the current report.
-  if (loading && !report) return <LoadingState label="Loading report" />
+  if (loading && !report) return <DetailSkeleton />
   if (error && !report) return <ErrorState message={error.message} onRetry={reload} />
 
   if (!report) {

@@ -7,6 +7,7 @@ import { getPriority } from '../../lib/reportUtils.js'
 import { formatDate } from '../../lib/format.js'
 import { useAsync } from '../../lib/useAsync.js'
 import { findPossibleDuplicates } from '../../scoring/duplicates.js'
+import { useFeedback } from '../../components/Feedback.jsx'
 
 // Authority-only panel on the report details page: suggests reports that may
 // describe the same problem and lets the authority merge this report into one.
@@ -14,6 +15,7 @@ export default function DuplicatesPanel({ report, onMerged }) {
   const { data: all, loading, error } = useAsync(fetchReports, [])
   const [merging, setMerging] = useState(null)
   const [mergeError, setMergeError] = useState('')
+  const { confirm, toast } = useFeedback()
 
   if (loading || error) return null
 
@@ -21,14 +23,17 @@ export default function DuplicatesPanel({ report, onMerged }) {
   const hasMergedChildren = report.duplicates > 1
 
   async function handleMerge(target) {
-    const ok = window.confirm(
-      `Merge ${report.id} into ${target.id}?\n\n${report.id} will be closed as a duplicate and ${target.id} will count it as a repeat report.`,
-    )
+    const ok = await confirm({
+      title: `Merge ${report.id} into ${target.id}?`,
+      message: `${report.id} will be closed as a duplicate, and ${target.id} will count it as a repeat report. The reporter is notified.`,
+      confirmLabel: 'Merge reports',
+    })
     if (!ok) return
     setMerging(target.uuid)
     setMergeError('')
     try {
       await mergeReport(report, target)
+      toast(`${report.id} merged into ${target.id}`)
       onMerged()
     } catch (err) {
       setMergeError(err.message)

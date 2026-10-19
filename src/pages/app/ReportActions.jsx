@@ -5,6 +5,20 @@ import { addReportRemark, fetchWorkers, updateReportStatus } from '../../lib/rep
 import { compressImage } from '../../lib/imageUtils.js'
 import { useAuth } from '../../lib/auth.jsx'
 import { useAsync } from '../../lib/useAsync.js'
+import { useFeedback } from '../../components/Feedback.jsx'
+
+// Message shown after each successful action.
+function successMessage(action, report) {
+  if (!action.to) return 'Remark posted'
+  if (action.to === 'under_repair' && report.status === 'resolved') return 'Report reopened for rework'
+  return {
+    verified: 'Report verified',
+    assigned: 'Worker assigned. They have been notified.',
+    under_repair: 'Repair started',
+    resolved: 'Marked as resolved. An authority will check the repair.',
+    closed: 'Report closed',
+  }[action.to]
+}
 
 const REMARK_ACTION = {
   to: null,
@@ -41,6 +55,7 @@ function WorkerSelect({ value, onChange }) {
 // Panel on the report details page with the actions the signed-in user may take.
 export default function ReportActions({ report, onChanged }) {
   const { profile } = useAuth()
+  const { toast } = useFeedback()
   const fileInput = useRef(null)
   const [action, setAction] = useState(null)
   const [note, setNote] = useState('')
@@ -93,6 +108,7 @@ export default function ReportActions({ report, onChanged }) {
       } else {
         await addReportRemark(report, { note: trimmed, photoBlob: photo?.blob })
       }
+      toast(successMessage(action, report))
       setAction(null)
       onChanged()
     } catch (err) {

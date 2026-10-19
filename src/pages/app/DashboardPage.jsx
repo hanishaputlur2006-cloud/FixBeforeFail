@@ -1,7 +1,8 @@
 import { useAuth } from '../../lib/auth.jsx'
 import { fetchReports } from '../../lib/reportsApi.js'
 import { useAsync } from '../../lib/useAsync.js'
-import { ErrorState, LoadingState } from '../../components/StateViews.jsx'
+import { ErrorState } from '../../components/StateViews.jsx'
+import { DashboardSkeleton } from '../../components/Skeletons.jsx'
 import AuthorityDashboard from './AuthorityDashboard.jsx'
 import CitizenDashboard from './CitizenDashboard.jsx'
 import WorkerDashboard from './WorkerDashboard.jsx'
@@ -13,8 +14,8 @@ export default function DashboardPage() {
   const { profile } = useAuth()
   const { data: reports, loading, error, reload } = useAsync(fetchReports, [])
 
-  if (loading) return <LoadingState label="Loading reports" />
-  if (error) return <ErrorState message={error.message} onRetry={reload} />
+  if (loading && !reports) return <DashboardSkeleton />
+  if (error && !reports) return <ErrorState message={error.message} onRetry={reload} />
 
   if (profile.role === 'citizen') return <CitizenDashboard reports={reports} profile={profile} />
   if (profile.role === 'worker') return <WorkerDashboard reports={reports} profile={profile} />
