@@ -6,6 +6,7 @@ import AppLayout from './layouts/AppLayout.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import DashboardPage from './pages/app/DashboardPage.jsx'
 import ReportDetailPage from './pages/app/ReportDetailPage.jsx'
+import NewReportPage from './pages/app/NewReportPage.jsx'
 import { AuthProvider } from './lib/auth.jsx'
 
 // Each <Route> maps a URL to a page component.
@@ -30,7 +31,7 @@ export default function App() {
         >
           <Route index element={<DashboardPage />} />
           <Route path="reports/:id" element={<ReportDetailPage />} />
-          <Route path="new-report" element={<PlaceholderPage title="New report" phase={4} inApp />} />
+          <Route path="new-report" element={<NewReportPage />} />
           <Route path="map" element={<PlaceholderPage title="Map" phase={7} inApp />} />
           <Route path="analytics" element={<PlaceholderPage title="Analytics" phase={7} inApp />} />
           <Route path="*" element={<PlaceholderPage title="Page not found" notFound inApp />} />

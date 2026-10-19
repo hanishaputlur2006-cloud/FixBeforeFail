@@ -483,3 +483,32 @@
     padding: 20px;
   }
 }
+
+/* Report photo and success notice */
+.detail-photo img {
+  display: block;
+  width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.notice-success {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border: 1px solid #b9dfc9;
+  border-radius: var(--radius);
+  background: var(--success-bg);
+  color: var(--success);
+  font-size: 14px;
+}
+
+.notice-success svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}

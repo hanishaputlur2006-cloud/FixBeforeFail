@@ -32,6 +32,31 @@ export const CATEGORIES = {
   equipment: 'Public equipment',
 }
 
+// Options shown on the report form. Keys match the database.
+export const SEVERITY_OPTIONS = [
+  { value: 'minor', label: 'Minor', hint: 'Cosmetic or small wear' },
+  { value: 'moderate', label: 'Moderate', hint: 'Damaged but still usable' },
+  { value: 'major', label: 'Major', hint: 'Not working or getting worse' },
+  { value: 'critical', label: 'Critical', hint: 'Failed or about to fail' },
+]
+
+export const SAFETY_OPTIONS = [
+  { value: 'none', label: 'No danger', hint: 'Inconvenient, not dangerous' },
+  { value: 'possible', label: 'Possible risk', hint: 'Could cause a fall or accident' },
+  { value: 'immediate', label: 'Immediate danger', hint: 'Live wires, open holes, flooding' },
+]
+
+export const LOCATION_TYPES = {
+  school: 'Near a school',
+  hospital: 'Near a hospital or clinic',
+  main_road: 'Main road or junction',
+  transit: 'Bus stop or station',
+  market: 'Market or shopping area',
+  residential: 'Residential street',
+  park: 'Park or recreation area',
+  other: 'Other',
+}
+
 // Days a report may stay unresolved before it counts as overdue.
 export const TARGET_DAYS = {
   critical: 3,

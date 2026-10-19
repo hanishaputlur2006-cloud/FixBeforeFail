@@ -33,6 +33,10 @@ function toReport(row) {
     description: row.description,
     category: row.category,
     location: row.location_text,
+    locationType: row.location_type,
+    latitude: row.latitude,
+    longitude: row.longitude,
+    photoPath: row.photo_path,
     status: row.status,
     reportedAt: row.created_at,
     resolvedAt: row.resolved_at,
@@ -82,4 +86,57 @@ export async function fetchReportByRef(ref) {
       remark: e.note,
     })),
   }
+}
+
+const PHOTO_BUCKET = 'report-images'
+
+/**
+ * Saves a new report. If a photo is given it is uploaded first, then the report
+ * row is created pointing to it. Returns the new reference, e.g. "FBF-1001".
+ */
+export async function createReport(input, photoBlob) {
+  const { data: auth } = await supabase.auth.getUser()
+  const userId = auth.user?.id
+  if (!userId) throw new Error('You are signed out. Please log in again.')
+
+  let photoPath = null
+  if (photoBlob) {
+    photoPath = `${userId}/${crypto.randomUUID()}.jpg`
+    const { error } = await supabase.storage
+      .from(PHOTO_BUCKET)
+      .upload(photoPath, photoBlob, { contentType: 'image/jpeg' })
+    if (error) throw new Error(`Photo upload failed: ${error.message}`)
+  }
+
+  const { data, error } = await supabase
+    .from('reports')
+    .insert({
+      reporter_id: userId,
+      title: input.title,
+      description: input.description,
+      category: input.category,
+      severity: input.severity,
+      safety_risk: input.safetyRisk,
+      location_text: input.location,
+      location_type: input.locationType || null,
+      latitude: input.latitude ?? null,
+      longitude: input.longitude ?? null,
+      photo_path: photoPath,
+    })
+    .select('ref_no')
+    .single()
+
+  if (error) {
+    // Do not leave an orphaned photo behind if the report could not be saved.
+    if (photoPath) await supabase.storage.from(PHOTO_BUCKET).remove([photoPath])
+    throw error
+  }
+  return formatRef(data.ref_no)
+}
+
+// Photos are private, so the app asks for a temporary link (valid for one hour).
+export async function getPhotoUrl(path) {
+  const { data, error } = await supabase.storage.from(PHOTO_BUCKET).createSignedUrl(path, 3600)
+  if (error) throw error
+  return data.signedUrl
 }

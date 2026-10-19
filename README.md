@@ -1,4 +1,4 @@
-# FixBeforeFail
+﻿# FixBeforeFail
 
 Report problems before they become failures.
 
@@ -8,7 +8,7 @@ FixBeforeFail is an infrastructure early-warning platform. Citizens report publi
 
 - React + Vite (frontend)
 - React Router (pages)
-- Supabase (database, authentication, Row Level Security; storage in phase 4)
+- Supabase (database, authentication, Row Level Security, photo storage)
 - Plain CSS with design tokens in `src/styles/tokens.css`
 
 ## Running locally
@@ -17,7 +17,7 @@ Requires [Node.js](https://nodejs.org) 20 or newer and a [Supabase](https://supa
 
 1. Copy `.env.example` to `.env.local` and fill in your Supabase project URL and **anon public** key
    (Supabase dashboard > Project Settings > API Keys). Never use the service role key here.
-2. In the Supabase SQL Editor, run `supabase/001_initial_schema.sql` once.
+2. In the Supabase SQL Editor, run each file in `supabase/` once, in order (001, 002, ...).
 3. In Supabase > Authentication > URL Configuration, set the Site URL to `http://localhost:5173`.
 4. Start the app:
 
@@ -48,7 +48,7 @@ src/
 - [x] Phase 1: project setup, design system, landing page
 - [x] Phase 2: navigation and dashboard layouts
 - [x] Phase 3: Supabase database and authentication
-- [ ] Phase 4: report submission, photos and listing
+- [x] Phase 4: report submission, photos and listing
 - [ ] Phase 5: risk scoring engine
 - [ ] Phase 6: role-based dashboards and report lifecycle
 - [ ] Phase 7: maps, notifications, analytics and testing

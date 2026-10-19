@@ -1,19 +1,32 @@
-import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, FileQuestion, ImageOff, MapPin } from 'lucide-react'
+import { Link, useLocation, useParams } from 'react-router-dom'
+import { ArrowLeft, CircleCheck, FileQuestion, ImageOff, MapPin } from 'lucide-react'
 import ScoreBreakdown from '../../components/ScoreBreakdown.jsx'
 import StatusTimeline from '../../components/StatusTimeline.jsx'
 import { EmptyState } from '../../components/StateViews.jsx'
 import { PriorityBadge, StatusBadge } from '../../components/Badges.jsx'
-import { CATEGORIES } from '../../lib/reportMeta.js'
+import { CATEGORIES, LOCATION_TYPES } from '../../lib/reportMeta.js'
 import { getPriority, isOverdue } from '../../lib/reportUtils.js'
 import { formatDate } from '../../lib/format.js'
-import { fetchReportByRef } from '../../lib/reportsApi.js'
+import { fetchReportByRef, getPhotoUrl } from '../../lib/reportsApi.js'
 import { useAsync } from '../../lib/useAsync.js'
 import { ErrorState, LoadingState } from '../../components/StateViews.jsx'
 import './app.css'
 
+// Private photos are shown through a temporary signed link.
+function ReportPhoto({ path }) {
+  const { data: url, loading, error } = useAsync(() => getPhotoUrl(path), [path])
+  if (loading) return <LoadingState label="Loading photo" />
+  if (error) return <p className="field-error">The photo could not be loaded.</p>
+  return (
+    <a href={url} target="_blank" rel="noreferrer" className="detail-photo">
+      <img src={url} alt="Photo submitted with the report" />
+    </a>
+  )
+}
+
 export default function ReportDetailPage() {
   const { id } = useParams()
+  const location = useLocation()
   const { data: report, loading, error, reload } = useAsync(() => fetchReportByRef(id), [id])
 
   const backLink = (
@@ -47,6 +60,15 @@ export default function ReportDetailPage() {
     <>
       {backLink}
 
+      {location.state?.justCreated && (
+        <div className="notice-success" role="status">
+          <CircleCheck size={18} />
+          <span>
+            Report submitted. It has been scored and sent to the authorities for review. You can follow its progress here.
+          </span>
+        </div>
+      )}
+
       <header className="detail-header">
         <div className="detail-tags">
           <span className="detail-id mono">{report.id}</span>
@@ -72,6 +94,16 @@ export default function ReportDetailPage() {
                 <dd>{CATEGORIES[report.category]}</dd>
               </div>
               <div>
+                <dt>Type of place</dt>
+                <dd>{LOCATION_TYPES[report.locationType] ?? 'Not specified'}</dd>
+              </div>
+              <div>
+                <dt>Coordinates</dt>
+                <dd className="mono">
+                  {report.latitude != null ? `${report.latitude.toFixed(5)}, ${report.longitude.toFixed(5)}` : 'Not provided'}
+                </dd>
+              </div>
+              <div>
                 <dt>Reported by</dt>
                 <dd>{report.reporter?.name ?? 'Citizen'}</dd>
               </div>
@@ -91,8 +123,12 @@ export default function ReportDetailPage() {
           </section>
 
           <section className="card detail-card">
-            <h2>Photos</h2>
-            <EmptyState icon={ImageOff} title="No photos yet" message="Report photos and repair evidence will appear here once uploads are available." />
+            <h2>Photo</h2>
+            {report.photoPath ? (
+              <ReportPhoto path={report.photoPath} />
+            ) : (
+              <EmptyState icon={ImageOff} title="No photo" message="This report was submitted without a photo." />
+            )}
           </section>
 
           <section className="card detail-card">
