@@ -46,7 +46,10 @@ How many people depend on the asset. This is the asset type's base score plus a 
 
 ### 4. Repeat reports (up to 15)
 
-More independent reports of the same problem suggest wider impact. An authority merges duplicates into the original report.
+More independent reports of the same problem suggest wider impact. Two things count as an extra report:
+
+- a **duplicate report** that an authority merged into the original, and
+- an **"I see this too" confirmation** from a citizen. When reporting, citizens see open reports of the same category within 200 m and can confirm one instead of filing a duplicate. Each citizen can confirm a report once, and cannot confirm their own.
 
 | Reports of the issue | 1 | 2 | 3 | 4 | 5 or more |
 |---|---|---|---|---|---|

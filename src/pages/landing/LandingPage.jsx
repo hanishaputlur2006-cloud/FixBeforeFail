@@ -20,6 +20,8 @@ import SiteFooter from '../../components/SiteFooter.jsx'
 import { StatusBadge } from '../../components/Badges.jsx'
 import { STATUS_ORDER } from '../../lib/reportMeta.js'
 import ProductPreview from './ProductPreview.jsx'
+import LiveStats from './LiveStats.jsx'
+import '../../components/Feedback.css'
 import './landing.css'
 
 const STEPS = [
@@ -139,6 +141,8 @@ export default function LandingPage() {
             <ProductPreview />
           </div>
         </section>
+
+        <LiveStats />
 
         {/* How it works */}
         <section className="section" id="how-it-works">

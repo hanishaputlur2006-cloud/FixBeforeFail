@@ -200,6 +200,65 @@
   border-left: 1px solid var(--border);
 }
 
+/* ---------- Live statistics ---------- */
+
+.live-stats {
+  padding: 40px 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.live-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 3px var(--success-bg);
+}
+
+.live-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  margin: 20px 0 0;
+}
+
+.live-grid div {
+  padding-left: 16px;
+  border-left: 2px solid var(--border);
+}
+
+.live-grid dt {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.live-grid dd {
+  margin: 6px 0 0;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 760px) {
+  .live-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .live-grid dd {
+    font-size: 22px;
+  }
+}
+
 /* ---------- How it works ---------- */
 
 .steps {

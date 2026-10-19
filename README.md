@@ -44,6 +44,24 @@ src/
   styles/       design tokens and global styles
 ```
 
+## Deploying (Vercel)
+
+1. Sign in at [vercel.com](https://vercel.com) with GitHub and import this repository.
+2. Add the environment variables `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (same values as `.env.local`).
+3. Deploy. `vercel.json` makes every page address load the app.
+4. In Supabase > Authentication > URL Configuration, set the Site URL to the Vercel address and add it to Redirect URLs.
+
+## Features
+
+- Citizens: step-by-step reporting with photo and map pin, nearby duplicate check ("I see this too"),
+  progress tracking, notifications, repair ratings
+- Authorities: risk-ranked queue, duplicate merging, verification and assignment, map, analytics,
+  escalation alerts for stuck reports
+- Maintenance workers: assigned jobs, progress remarks, evidence photo required to resolve
+- Explainable rule-based risk scoring: see [docs/risk-scoring.md](docs/risk-scoring.md)
+- Security enforced in the database with Row Level Security and checked functions
+- Light and dark themes
+
 ## Status
 
 - [x] Phase 1: project setup, design system, landing page
@@ -53,3 +71,4 @@ src/
 - [x] Phase 5: risk scoring engine (see docs/risk-scoring.md)
 - [x] Phase 6: role-based dashboards and report lifecycle
 - [x] Phase 7: maps, notifications, analytics and testing
+- [x] Engagement: confirmations, feedback, escalation, live statistics, dark mode
