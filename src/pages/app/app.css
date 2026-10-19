@@ -718,3 +718,14 @@
 .private-photo img {
   display: block;
 }
+
+.section-title {
+  margin-top: 36px;
+  font-size: 17px;
+}
+
+.section-sub {
+  margin: 4px 0 16px;
+  font-size: 14px;
+  color: var(--text-muted);
+}

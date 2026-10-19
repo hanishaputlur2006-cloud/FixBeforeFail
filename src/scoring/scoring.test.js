@@ -95,6 +95,15 @@ test('no adjustment when the score is already above the safety floor', () => {
   assert.equal(r.adjustment, null)
 })
 
+test('"I see this too" confirmations count like merged duplicates', () => {
+  const merged = scoreReport({ ...base, duplicate_count: 2 }, NOW)
+  const confirmed = scoreReport({ ...base, support_count: 2 }, NOW)
+  const both = scoreReport({ ...base, duplicate_count: 1, support_count: 1 }, NOW)
+  const r = (x) => x.factors.find((f) => f.key === 'repeats').points
+  assert.equal(r(merged), r(confirmed))
+  assert.equal(r(both), r(merged))
+})
+
 // ---- Duplicate detection ----
 
 const report = (over) => ({

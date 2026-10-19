@@ -72,3 +72,22 @@
 .leaflet-container {
   font-family: var(--font-sans);
 }
+
+/* Location picker on the report form */
+.picker-map {
+  height: 320px;
+  min-height: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.picker-pin span {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid #fff;
+  border-radius: 50% 50% 50% 0;
+  background: var(--blue-600);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  transform: rotate(-45deg);
+}

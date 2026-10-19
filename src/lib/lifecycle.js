@@ -13,13 +13,17 @@ export const TRANSITIONS = [
   { from: 'under_repair', to: 'closed', roles: ['authority'], noteRequired: true, label: 'Close report', tone: 'danger', hint: 'Close without completing the repair. Explain why.' },
   { from: 'resolved', to: 'closed', roles: ['authority'], noteRequired: false, label: 'Confirm fix and close', tone: 'primary', hint: 'The repair has been checked and the report is complete.' },
   { from: 'resolved', to: 'under_repair', roles: ['authority'], noteRequired: true, label: 'Reopen for rework', tone: 'secondary', hint: 'The repair is not good enough. Explain what still needs doing.' },
+  // Only for reports that were repaired, e.g. after the citizen disputes the repair.
+  { from: 'closed', to: 'under_repair', roles: ['authority'], noteRequired: true, label: 'Reopen for rework', tone: 'secondary', hint: 'Reopen this repaired report. Explain what still needs doing.', when: (r) => Boolean(r.resolvedAt) },
 ]
 
 // Which status changes the signed-in user can make on this report right now.
 export function availableTransitions(report, profile) {
   if (report.duplicateOf) return []
   if (profile.role === 'worker' && report.assignee?.id !== profile.id) return []
-  return TRANSITIONS.filter((t) => t.from === report.status && t.roles.includes(profile.role))
+  return TRANSITIONS.filter(
+    (t) => t.from === report.status && t.roles.includes(profile.role) && (!t.when || t.when(report)),
+  )
 }
 
 // Authorities can always add remarks; workers only on reports assigned to them.

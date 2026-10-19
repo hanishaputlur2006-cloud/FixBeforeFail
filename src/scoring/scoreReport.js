@@ -28,9 +28,14 @@ export function repeatPoints(reportCount) {
   return Math.min(f.max, f.firstExtraBonus + f.pointsPerExtraReport * (reportCount - 1))
 }
 
-function repeats(reportCount) {
-  if (reportCount <= 1) return { points: 0, note: 'Single report' }
-  return { points: repeatPoints(reportCount), note: `${reportCount} reports, merged into one issue` }
+// Merged duplicate reports and "I see this too" confirmations both count as independent reports.
+function repeats(duplicates, confirmations) {
+  const count = 1 + duplicates + confirmations
+  if (count <= 1) return { points: 0, note: 'Single report' }
+  const parts = []
+  if (duplicates) parts.push(`${duplicates} merged`)
+  if (confirmations) parts.push(`${confirmations} ${confirmations === 1 ? 'confirmation' : 'confirmations'}`)
+  return { points: repeatPoints(count), note: `${count} reports of this problem (${parts.join(', ')})` }
 }
 
 function timeOpen(createdAt, resolvedAt, now) {
@@ -58,7 +63,7 @@ export function scoreReport(report, now = Date.now()) {
     severity: fromTable(C.severity, report.severity),
     safety: fromTable(C.safety, report.safety_risk),
     publicImpact: publicImpact(report.category, report.location_type),
-    repeats: repeats(1 + (report.duplicate_count ?? 0)),
+    repeats: repeats(report.duplicate_count ?? 0, report.support_count ?? 0),
     location: fromTable(C.location, report.location_type),
     time: timeOpen(report.created_at, report.resolved_at, now),
   }

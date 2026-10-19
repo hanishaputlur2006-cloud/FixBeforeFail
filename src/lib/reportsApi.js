@@ -8,7 +8,7 @@ import { scoreReport } from '../scoring/scoreReport.js'
 const REPORT_COLUMNS = `
   id, ref_no, title, description, category, severity, safety_risk,
   location_text, location_type, latitude, longitude, photo_path,
-  status, assigned_to, duplicate_of, duplicate_count, source, created_at, updated_at, resolved_at,
+  status, assigned_to, duplicate_of, duplicate_count, support_count, source, created_at, updated_at, resolved_at,
   parent:reports!duplicate_of ( ref_no ),
   reporter:profiles!reporter_id ( id, full_name ),
   assignee:profiles!assigned_to ( id, full_name )
@@ -44,6 +44,7 @@ function toReport(row) {
     reporter: row.reporter ? { id: row.reporter.id, name: row.reporter.full_name || 'Citizen' } : null,
     assignee: row.assignee ? { id: row.assignee.id, name: row.assignee.full_name || 'Maintenance crew' } : null,
     duplicates: 1 + (row.duplicate_count ?? 0),
+    confirmations: row.support_count ?? 0,
     duplicateOf: row.duplicate_of,
     mergedInto: row.parent ? formatRef(row.parent.ref_no) : null,
     source: row.source,
@@ -208,4 +209,47 @@ export async function fetchWorkers() {
     name: w.full_name || 'Unnamed worker',
     activeJobs: jobs.filter((j) => j.assigned_to === w.id).length,
   }))
+}
+
+// Open reports of the same category within 200 m (see supabase/009_engagement.sql).
+export async function fetchNearbyReports(latitude, longitude, category) {
+  const { data, error } = await supabase.rpc('nearby_reports', { p_lat: latitude, p_lng: longitude, p_category: category })
+  if (error) throw error
+  return data.map((r) => ({
+    uuid: r.id,
+    id: formatRef(r.ref_no),
+    title: r.title,
+    status: r.status,
+    distance: r.distance_m,
+    reports: r.confirmations,
+  }))
+}
+
+// "I see this too": confirms an existing report instead of filing a duplicate.
+export async function supportReport(reportUuid) {
+  const { error } = await supabase.rpc('support_report', { p_report: reportUuid })
+  if (error) throw error
+}
+
+// The reporter's rating of a finished repair, or null if not rated yet.
+export async function fetchFeedback(reportUuid) {
+  const { data, error } = await supabase
+    .from('report_feedback')
+    .select('rating, comment, created_at')
+    .eq('report_id', reportUuid)
+    .maybeSingle()
+  if (error) throw error
+  return data
+}
+
+export async function submitFeedback(reportUuid, rating, comment) {
+  const { error } = await supabase.rpc('submit_feedback', { p_report: reportUuid, p_rating: rating, p_comment: comment || null })
+  if (error) throw error
+}
+
+// Totals for the public landing page. Works without logging in.
+export async function fetchPublicStats() {
+  const { data, error } = await supabase.rpc('public_stats')
+  if (error) throw error
+  return data
 }

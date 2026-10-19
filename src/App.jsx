@@ -7,7 +7,6 @@ import AppLayout from './layouts/AppLayout.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import DashboardPage from './pages/app/DashboardPage.jsx'
 import ReportDetailPage from './pages/app/ReportDetailPage.jsx'
-import NewReportPage from './pages/app/NewReportPage.jsx'
 import RoleGate from './components/RoleGate.jsx'
 import { LoadingState } from './components/StateViews.jsx'
 import { AuthProvider } from './lib/auth.jsx'
@@ -16,6 +15,7 @@ import { FeedbackProvider } from './components/Feedback.jsx'
 // The map and analytics pages are larger (map library, charts), so they load only when opened.
 const MapPage = lazy(() => import('./pages/app/MapPage.jsx'))
 const AnalyticsPage = lazy(() => import('./pages/app/AnalyticsPage.jsx'))
+const NewReportPage = lazy(() => import('./pages/app/NewReportPage.jsx'))
 
 function Lazy({ children }) {
   return <Suspense fallback={<LoadingState label="Loading page" />}>{children}</Suspense>
@@ -44,7 +44,14 @@ export default function App() {
           >
             <Route index element={<DashboardPage />} />
             <Route path="reports/:id" element={<ReportDetailPage />} />
-            <Route path="new-report" element={<NewReportPage />} />
+            <Route
+            path="new-report"
+            element={
+              <Lazy>
+                <NewReportPage />
+              </Lazy>
+            }
+          />
             <Route
               path="map"
               element={
