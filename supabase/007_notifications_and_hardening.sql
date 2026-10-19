@@ -12,6 +12,28 @@
 -- ---------------------------------------------------------------------
 -- 1. Notifications
 -- ---------------------------------------------------------------------
+
+-- An older, unrelated notifications table (from earlier test setups) may exist with
+-- integer user ids. Replace it if it has the wrong shape and holds no data.
+do $$
+declare
+  v_has_rows boolean;
+begin
+  if exists (select 1 from information_schema.tables where table_schema = 'public' and table_name = 'notifications')
+     and not exists (
+       select 1 from information_schema.columns
+       where table_schema = 'public' and table_name = 'notifications'
+         and column_name = 'user_id' and data_type = 'uuid'
+     ) then
+    execute 'select exists (select 1 from public.notifications)' into v_has_rows;
+    if v_has_rows then
+      raise exception 'An old notifications table with data exists. Back it up or remove it, then run this script again.';
+    end if;
+    drop table public.notifications cascade;
+  end if;
+end;
+$$;
+
 create table if not exists public.notifications (
   id          bigint generated always as identity primary key,
   user_id     uuid not null references public.profiles (id) on delete cascade,
