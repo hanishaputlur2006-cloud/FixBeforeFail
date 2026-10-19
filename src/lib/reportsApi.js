@@ -9,9 +9,9 @@ const REPORT_COLUMNS = `
   id, ref_no, title, description, category, severity, safety_risk,
   location_text, location_type, latitude, longitude, photo_path,
   status, assigned_to, duplicate_of, duplicate_count, source, created_at, updated_at, resolved_at,
-  parent:reports!reports_duplicate_of_fkey ( ref_no ),
-  reporter:profiles!reports_reporter_id_fkey ( id, full_name ),
-  assignee:profiles!reports_assigned_to_fkey ( id, full_name )
+  parent:reports!duplicate_of ( ref_no ),
+  reporter:profiles!reporter_id ( id, full_name ),
+  assignee:profiles!assigned_to ( id, full_name )
 `
 
 export function formatRef(refNo) {
