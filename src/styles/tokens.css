@@ -39,6 +39,20 @@
   --low-bg: #eef1f5;
   --success: #1e8a4c;
   --success-bg: #e8f5ee;
+  --success-border: #b9dfc9;
+  --critical-border: #f2c4c2;
+  --critical-hover: #a92623;
+
+  /* Charts (validated for colour-blind separation and contrast on each surface) */
+  --chart-1: #1e5fd8;
+  --chart-2: #0f9d8a;
+
+  /* Icons inside cards, and neutral bars (score breakdown) */
+  --icon: var(--navy-700);
+  --bar-fill: var(--navy-700);
+
+  /* Overlays behind dialogs and the mobile menu */
+  --scrim: rgba(11, 26, 46, 0.5);
 
   /* Typography */
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -60,4 +74,58 @@
   :root {
     --gutter: 16px;
   }
+}
+
+/*
+  Dark theme. Applied when <html data-theme="dark"> is set; src/lib/theme.js sets it
+  from the user's choice or, by default, from the device setting.
+  The navy brand areas (sidebar, header, hero) stay the same in both themes.
+*/
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --blue-700: #2a62cc;
+  --blue-600: #3b78ea;
+  --blue-50: #16264a;
+  --teal-600: #22b39d;
+  --teal-50: #0f2e2b;
+
+  --bg: #0b1220;
+  --surface: #121b2b;
+  --surface-muted: #1a2537;
+  --border: #243149;
+  --border-strong: #33435e;
+  --text: #e6ecf4;
+  --text-muted: #a3b1c4;
+  --text-subtle: #7586a0;
+
+  --critical: #e5534e;
+  --critical-bg: #3a1b1d;
+  --critical-border: #6b2a2a;
+  --critical-hover: #c9302c;
+  --high: #f0a640;
+  --high-bg: #3a2a12;
+  --high-border: #6b4a1a;
+  --medium: #e3c56d;
+  --medium-border: #8a6f2a;
+  --low: #a3b1c4;
+  --low-bg: #1f2a3c;
+  --success: #3fbf7a;
+  --success-bg: #10291c;
+  --success-border: #24563a;
+
+  --chart-1: #4c8dff;
+  --chart-2: #179884;
+
+  --icon: #a3b1c4;
+  --bar-fill: #6b8bbd;
+
+  --scrim: rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Map tiles have no dark version; this filter darkens them to match. */
+:root[data-theme='dark'] .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9);
 }

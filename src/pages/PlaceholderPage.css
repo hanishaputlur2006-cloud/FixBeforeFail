@@ -27,7 +27,7 @@
   height: 44px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  color: var(--navy-700);
+  color: var(--icon);
 }
 
 .placeholder-card h1 {

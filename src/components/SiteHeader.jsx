@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Logo from './Logo.jsx'
 import { useAuth } from '../lib/auth.jsx'
+import ThemeToggle from './ThemeToggle.jsx'
 import './SiteHeader.css'
 
 // Top bar for public pages (landing, login, register).
@@ -21,6 +22,7 @@ export default function SiteHeader() {
         </nav>
 
         <div className="site-header-actions">
+          <ThemeToggle onDark />
           {session ? (
             <Link to="/app" className="btn btn-text-light">
               Dashboard

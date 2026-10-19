@@ -58,7 +58,7 @@
 .breakdown-fill {
   height: 100%;
   border-radius: 2px;
-  background: var(--navy-700);
+  background: var(--bar-fill);
 }
 
 .breakdown-note {
@@ -77,7 +77,7 @@
   border: 1px solid var(--critical-bg);
   border-left: 3px solid var(--critical);
   border-radius: var(--radius-sm);
-  background: #fffafa;
+  background: var(--surface);
 }
 
 .breakdown-adjustment .breakdown-row span:last-child {

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import Logo from '../components/Logo.jsx'
 import NotificationBell from '../components/NotificationBell.jsx'
+import ThemeToggle from '../components/ThemeToggle.jsx'
 import { ROLE_LABELS, useAuth } from '../lib/auth.jsx'
 import { initials } from '../lib/format.js'
 import './AppLayout.css'
@@ -95,7 +96,10 @@ export default function AppLayout() {
 
           <span className="topbar-role">{ROLE_LABELS[role]} workspace</span>
 
-          <NotificationBell userId={profile.id} />
+          <div className="topbar-actions">
+            <ThemeToggle />
+            <NotificationBell userId={profile.id} />
+          </div>
         </header>
 
         <main className="app-content">

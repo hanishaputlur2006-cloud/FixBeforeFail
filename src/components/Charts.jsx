@@ -3,7 +3,7 @@ import './Charts.css'
 
 // Small hand-built charts (no chart library). Colours were checked for
 // colour-blind separation and contrast: blue for single series, blue + teal for pairs.
-export const SERIES = { primary: '#1e5fd8', secondary: '#0f9d8a' }
+export const SERIES = { primary: 'var(--chart-1)', secondary: 'var(--chart-2)' }
 
 // Hover tooltip shared by the charts. Follows the pointer inside the chart box.
 function useTooltip() {
@@ -173,7 +173,7 @@ export function GroupedColumns({ groups, series, height = 220 }) {
                 {series.map((s, j) => {
                   const v = g.values[s.key]
                   const x = startX + j * (barW + gap)
-                  return <path key={s.key} d={columnPath(x, y(v), barW, y(0) - y(v))} fill={s.color} />
+                  return <path key={s.key} d={columnPath(x, y(v), barW, y(0) - y(v))} style={{ fill: s.color }} />
                 })}
                 {i % labelEvery === 0 && (
                   <text x={groupX + groupW / 2} y={height - 8} className="axis-label" textAnchor="middle">

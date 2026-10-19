@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: var(--navy-950);
+  color: var(--text);
 }
 
 .logo-on-dark {

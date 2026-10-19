@@ -4,7 +4,7 @@ import './Logo.css'
 // right arm levels out into a flat beam (infrastructure kept steady).
 // Set onDark when the logo sits on a navy background.
 export default function Logo({ onDark = false, size = 28, wordmark = true }) {
-  const shieldColor = onDark ? '#ffffff' : 'var(--navy-950)'
+  const shieldColor = onDark ? '#ffffff' : 'var(--text)'
   const checkColor = onDark ? 'var(--teal-500)' : 'var(--teal-600)'
 
   return (

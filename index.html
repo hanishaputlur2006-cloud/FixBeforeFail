@@ -14,6 +14,14 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script>
+      // Apply the saved or device theme before the page draws (see src/lib/theme.js).
+      try {
+        var t = localStorage.getItem('fbf-theme')
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        document.documentElement.dataset.theme = t
+      } catch (e) {}
+    </script>
     <title>FixBeforeFail | Infrastructure early-warning platform</title>
   </head>
   <body>
