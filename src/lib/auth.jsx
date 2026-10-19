@@ -48,10 +48,11 @@ export function AuthProvider({ children }) {
       .from('profiles')
       .select('id, full_name, role')
       .eq('id', userId)
-      .single()
+      .maybeSingle()
       .then(({ data, error }) => {
         if (cancelled) return
         if (error) setProfileError(error.message)
+        else if (!data) setProfileError('This account has no profile in the database.')
         setProfile(data ?? null)
         setProfileLoading(false)
       })
