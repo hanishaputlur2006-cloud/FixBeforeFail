@@ -33,6 +33,33 @@ function AuthShell({ title, subtitle, children, footer }) {
   )
 }
 
+// "Resend confirmation email" with its own sending / sent / error states.
+function ResendConfirmation({ email }) {
+  const { resendConfirmation } = useAuth()
+  const [state, setState] = useState('idle') // idle | sending | sent | error
+  const [message, setMessage] = useState('')
+
+  async function resend() {
+    setState('sending')
+    const { error } = await resendConfirmation(email)
+    if (error) {
+      setMessage(friendlyError(error))
+      setState('error')
+    } else setState('sent')
+  }
+
+  if (state === 'sent') return <p className="auth-note-ok">A new confirmation email is on its way. Check your inbox and spam folder.</p>
+  return (
+    <div className="auth-resend">
+      <button type="button" className="btn btn-secondary" onClick={resend} disabled={state === 'sending'}>
+        {state === 'sending' && <LoaderCircle size={16} className="spin" />}
+        Resend confirmation email
+      </button>
+      {state === 'error' && <p className="field-error">{message}</p>}
+    </div>
+  )
+}
+
 function FormError({ message }) {
   if (!message) return null
   return (
@@ -50,6 +77,7 @@ export function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [unconfirmed, setUnconfirmed] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
   // Where to go after logging in: the page they tried to open, or the dashboard.
@@ -60,6 +88,7 @@ export function LoginPage() {
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
+    setUnconfirmed(false)
     if (!EMAIL_PATTERN.test(email.trim())) return setError('Enter a valid email address.')
     if (!password) return setError('Enter your password.')
 
@@ -67,8 +96,10 @@ export function LoginPage() {
     const { error: signInError } = await signIn(email.trim(), password)
     setSubmitting(false)
 
-    if (signInError) setError(friendlyError(signInError))
-    else navigate(destination, { replace: true })
+    if (signInError) {
+      setError(friendlyError(signInError))
+      setUnconfirmed(/email not confirmed/i.test(signInError.message ?? ''))
+    } else navigate(destination, { replace: true })
   }
 
   return (
@@ -83,6 +114,7 @@ export function LoginPage() {
     >
       <form className="auth-form" onSubmit={handleSubmit} noValidate>
         <FormError message={error} />
+        {unconfirmed && <ResendConfirmation email={email.trim()} />}
         <label className="field">
           <span>Email</span>
           <input className="input" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -150,7 +182,9 @@ export function RegisterPage() {
             We sent a confirmation link to <strong>{form.email.trim()}</strong>. Open it to activate your account, then
             log in.
           </p>
-          <Link to="/login" className="btn btn-secondary">
+          <p className="auth-note">Did not get it? Check your spam folder, or send it again.</p>
+          <ResendConfirmation email={form.email.trim()} />
+          <Link to="/login" className="btn btn-primary">
             Go to log in
           </Link>
         </div>

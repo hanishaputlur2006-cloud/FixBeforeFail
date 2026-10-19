@@ -11,7 +11,12 @@ import { ageInDays, getPriority, isOpen, isOverdue, sortByRisk } from '../../lib
 
 const DEFAULT_FILTERS = { search: '', category: 'all', priority: 'all', status: 'open' }
 
-export default function AuthorityDashboard({ reports: allReports }) {
+// Also used as the citizens' "All reports" page, with a different title.
+export default function AuthorityDashboard({
+  reports: allReports,
+  title = 'Overview',
+  description = 'Every reported issue in your area, ranked by risk.',
+}) {
   // Merged duplicates are counted on their original report, so list each issue once.
   const reports = useMemo(() => allReports.filter((r) => !r.duplicateOf), [allReports])
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
@@ -51,7 +56,7 @@ export default function AuthorityDashboard({ reports: allReports }) {
 
   return (
     <>
-      <PageHeader title="Overview" description="Every reported issue in your area, ranked by risk." />
+      <PageHeader title={title} description={description} />
 
       <div className="stat-grid">
         <StatCard label="Total reports" value={stats.total} />

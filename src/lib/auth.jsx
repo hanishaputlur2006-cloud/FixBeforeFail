@@ -82,6 +82,10 @@ export function AuthProvider({ children }) {
         },
       }),
 
+    // Sends the sign-up confirmation email again (for example if it went to spam or expired).
+    resendConfirmation: (email) =>
+      supabase.auth.resend({ type: 'signup', email, options: { emailRedirectTo: `${window.location.origin}/app` } }),
+
     signOut: () => supabase.auth.signOut(),
   }
 

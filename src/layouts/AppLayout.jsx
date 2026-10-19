@@ -5,6 +5,7 @@ import {
   ClipboardList,
   FilePlus2,
   LayoutDashboard,
+  List,
   LogOut,
   Map as MapIcon,
   Menu,
@@ -22,6 +23,8 @@ const NAV = {
   citizen: [
     { to: '/app', label: 'My reports', icon: LayoutDashboard, end: true },
     { to: '/app/new-report', label: 'New report', icon: FilePlus2 },
+    { to: '/app/all-reports', label: 'All reports', icon: List },
+    { to: '/app/map', label: 'Map', icon: MapIcon },
   ],
   authority: [
     { to: '/app', label: 'Overview', icon: LayoutDashboard, end: true },

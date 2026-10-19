@@ -7,6 +7,7 @@ import AppLayout from './layouts/AppLayout.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import DashboardPage from './pages/app/DashboardPage.jsx'
 import ReportDetailPage from './pages/app/ReportDetailPage.jsx'
+import AllReportsPage from './pages/app/AllReportsPage.jsx'
 import RoleGate from './components/RoleGate.jsx'
 import { LoadingState } from './components/StateViews.jsx'
 import { AuthProvider } from './lib/auth.jsx'
@@ -44,6 +45,14 @@ export default function App() {
           >
             <Route index element={<DashboardPage />} />
             <Route path="reports/:id" element={<ReportDetailPage />} />
+          <Route
+            path="all-reports"
+            element={
+              <RoleGate roles={['citizen']}>
+                <AllReportsPage />
+              </RoleGate>
+            }
+          />
             <Route
             path="new-report"
             element={
@@ -55,7 +64,7 @@ export default function App() {
             <Route
               path="map"
               element={
-                <RoleGate roles={['authority', 'worker']}>
+                <RoleGate roles={['authority', 'worker', 'citizen']}>
                   <Lazy>
                     <MapPage />
                   </Lazy>

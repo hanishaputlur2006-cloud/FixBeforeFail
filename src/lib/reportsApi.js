@@ -116,7 +116,8 @@ export async function createReport(input, photoBlob) {
   const userId = auth.user?.id
   if (!userId) throw new Error('You are signed out. Please log in again.')
 
-  const photoPath = photoBlob ? await uploadPhoto(photoBlob) : null
+  if (!photoBlob) throw new Error('A photo of the problem is required.')
+  const photoPath = await uploadPhoto(photoBlob)
 
   const { data, error } = await supabase
     .from('reports')
@@ -259,4 +260,11 @@ export async function fetchPublicStats() {
   const { data, error } = await supabase.rpc('public_stats')
   if (error) throw error
   return data
+}
+
+// IDs of the reports the signed-in user confirmed with "I see this too".
+export async function fetchMySupports() {
+  const { data, error } = await supabase.from('report_supports').select('report_id')
+  if (error) throw error
+  return new Set(data.map((s) => s.report_id))
 }

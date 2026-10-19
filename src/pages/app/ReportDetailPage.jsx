@@ -16,6 +16,7 @@ import { useAuth } from '../../lib/auth.jsx'
 import DuplicatesPanel from './DuplicatesPanel.jsx'
 import ReportActions from './ReportActions.jsx'
 import FeedbackPanel from './FeedbackPanel.jsx'
+import SupportCard from './SupportCard.jsx'
 import './app.css'
 
 export default function ReportDetailPage() {
@@ -155,6 +156,7 @@ export default function ReportDetailPage() {
 
         <aside className="detail-side">
           <ReportActions report={report} onChanged={reload} />
+          <SupportCard report={report} onChanged={reload} />
 
           <div className="card detail-card detail-score">
             <ScoreBreakdown score={report.score} factors={report.factors} adjustment={report.adjustment} />

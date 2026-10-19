@@ -109,7 +109,9 @@ export default function MapPage() {
       <PageHeader
         title="Map"
         description={
-          profile.role === 'worker' ? 'Your assigned jobs by location. Click a marker to open it.' : 'Reported issues by location. Click a marker to open the report.'
+          profile.role === 'worker'
+            ? 'Your assigned jobs by location. Click a marker to open it.'
+            : 'Reported issues by location. Click a marker to open the report.'
         }
       />
 

@@ -110,3 +110,14 @@
     padding: 24px 20px;
   }
 }
+
+.auth-resend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-note-ok {
+  font-size: 13px;
+  color: var(--success);
+}

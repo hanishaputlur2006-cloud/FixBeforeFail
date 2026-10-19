@@ -1,5 +1,5 @@
 import { useAuth } from '../../lib/auth.jsx'
-import { fetchReports } from '../../lib/reportsApi.js'
+import { fetchMySupports, fetchReports } from '../../lib/reportsApi.js'
 import { useAsync } from '../../lib/useAsync.js'
 import { ErrorState } from '../../components/StateViews.jsx'
 import { DashboardSkeleton } from '../../components/Skeletons.jsx'
@@ -13,11 +13,16 @@ import './app.css'
 export default function DashboardPage() {
   const { profile } = useAuth()
   const { data: reports, loading, error, reload } = useAsync(fetchReports, [])
+  // Citizens also need the reports they confirmed, to list the problems they follow.
+  const { data: supports } = useAsync(
+    () => (profile.role === 'citizen' ? fetchMySupports() : Promise.resolve(new Set())),
+    [profile.role],
+  )
 
   if (loading && !reports) return <DashboardSkeleton />
   if (error && !reports) return <ErrorState message={error.message} onRetry={reload} />
 
-  if (profile.role === 'citizen') return <CitizenDashboard reports={reports} profile={profile} />
+  if (profile.role === 'citizen') return <CitizenDashboard reports={reports} profile={profile} supports={supports ?? new Set()} />
   if (profile.role === 'worker') return <WorkerDashboard reports={reports} profile={profile} />
   return <AuthorityDashboard reports={reports} />
 }

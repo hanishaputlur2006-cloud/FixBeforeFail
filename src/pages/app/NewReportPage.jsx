@@ -188,6 +188,10 @@ export default function NewReportPage() {
   }
 
   function next() {
+    if (step === 0 && !photo) {
+      setErrors({ photo: 'Add a photo of the problem to continue.' })
+      return
+    }
     const found = validateStep(step, form)
     setErrors(found)
     if (Object.keys(found).length) return
@@ -249,6 +253,11 @@ export default function NewReportPage() {
 
   async function submit() {
     setSubmitError('')
+    if (!photo) {
+      setErrors({ photo: 'Add a photo of the problem to continue.' })
+      setStep(0)
+      return
+    }
     for (const s of [1, 2, 3]) {
       const found = validateStep(s, form)
       if (Object.keys(found).length) {
@@ -296,7 +305,7 @@ export default function NewReportPage() {
             <>
               <div>
                 <h2>Add a photo of the problem</h2>
-                <p className="step-hint">A clear photo helps the authorities judge the problem without a site visit. You can skip this.</p>
+                <p className="step-hint">A photo is required. It shows the authorities the problem without a site visit and confirms the report is genuine.</p>
               </div>
               <input ref={fileInput} type="file" accept="image/jpeg,image/png,image/webp" capture="environment" hidden onChange={handlePhoto} />
               {photo ? (
@@ -474,7 +483,7 @@ export default function NewReportPage() {
               <h2>Check your report</h2>
               <dl className="review">
                 {[
-                  ['Photo', photo ? <img src={photo.previewUrl} alt="Your photo" className="review-photo" /> : 'No photo', 0],
+                  ['Photo', photo && <img src={photo.previewUrl} alt="Your photo" className="review-photo" />, 0],
                   ['Category', CATEGORIES[form.category], 1],
                   ['Title', form.title.trim(), 1],
                   ['Description', form.description.trim() || 'None', 1],
@@ -518,7 +527,7 @@ export default function NewReportPage() {
           )}
           {step < STEPS.length - 1 ? (
             <button type="button" className="btn btn-primary btn-lg" onClick={next} disabled={photoBusy}>
-              {step === 0 && !photo ? 'Continue without photo' : 'Continue'}
+              Continue
               <ArrowRight size={16} />
             </button>
           ) : (

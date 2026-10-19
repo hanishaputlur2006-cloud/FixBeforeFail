@@ -786,3 +786,32 @@
   font-size: 14px;
   font-weight: 500;
 }
+
+/* "I see this too" on a report page */
+.support-card h2 {
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+
+.support-card p {
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.support-card.is-done {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.support-card.is-done svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--success);
+}
+
+.support-card.is-done p {
+  margin: 0;
+  color: var(--text);
+}
